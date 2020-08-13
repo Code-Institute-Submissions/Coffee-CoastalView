@@ -1,3 +1,25 @@
 {% extends 'base.html' %} {% block content %}
+<nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Coffee & Coastal Views</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="home.html">Home</a></li>
+        <li><a href="cafes.html">Cafes</a></li>
+        <li><a href="user.html">My Profile</a></li>
+      </ul>
+    </div>
+  </nav>
 <h1>Cafes Page</h1>
+    {% for cafe in cafes %}
+    <div class="row">
+        <div class="col s3">
+       <h4>{{cafe.name}}</h4>
+        <p>{{cafe.address}}<p>
+      </div>
+      
+        
+    
+        
+        {% endfor %}
+    </div>
 {% endblock %}

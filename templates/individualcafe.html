@@ -1,12 +1,46 @@
 {% extends 'base.html' %} {% block content %}
 <nav>
-    <div class="nav-wrapper">
+    <div class="nav-wrapper-light-blue darken-2">
       <a href="#" class="brand-logo">Coffee & Coastal Views</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="home.html">Home</a></li>
-        <li><a href="cafes.html">Cafes</a></li>
-        <li><a href={{url}}>My Profile</a></li>
+        <li><a href="{{ url_for('get_cafes') }}">Cafes</a></li>
+        <li><a href="{{ url_for('get_profile') }}">My Profile</a></li>
+        <li><a href="{{ url_for('index') }}" method="GET">Login</a></li>
       </ul>
     </div>
   </nav>
-<h1></h1>
+<div class="container">
+    <div class="row">
+        <div class="col s12 center-align">
+            <h1>{{cafe.name}}</h1>
+        </div>
+    </div>  
+    <div class="row">
+        <div class="col s12 center-align">
+             <img class="responsive-img circle" src="{{cafe.image}}">
+        </div>
+    </div>
+    <div class="row">  
+        <div class="col s12 center-align">
+            <h5>{{cafe.address}}</h5>
+        </div>  
+    </div>
+    <div class="row">  
+        <div class="col s12 center-align">
+            <h5>REVIEWS</h5>
+        </div>  
+    </div>
+    <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <h5> Add Review </h5>  
+          <textarea id="textarea1" class="materialize-textarea"></textarea>
+          <a href="#" class="waves-effect waves-light btn">Submit Review</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>    
+{% endblock %}

@@ -15,5 +15,32 @@
     transition: box-shadow .25s;
     transition: box-shadow .25s, -webkit-box-shadow .25s;
     border-radius: 2px;
-    height: 450px!important;
+    height: 475px!important;
+}
+
+card .card-content .card-title {
+    display: block;
+    line-height: 32px;
+    margin-bottom: 3px;
+}
+
+#form {
+    border: 1px #598AB0;
+}
+
+@media screen and (min-width: 1400px) {
+
+
+.card {
+    position: relative;
+    margin: .5rem 0 1rem 0;
+    background-color: #fff;
+    -webkit-transition: -webkit-box-shadow .25s;
+    transition: -webkit-box-shadow .25s;
+    transition: box-shadow .25s;
+    transition: box-shadow .25s, -webkit-box-shadow .25s;
+    border-radius: 2px;
+    height: 550px!important;
+}
+
 }

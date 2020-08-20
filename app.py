@@ -22,31 +22,24 @@ def get_cafes():
 @app.route('/get_individualcafe/<cafe_id>')
 def get_individualcafe(cafe_id):
         return render_template("individualcafe.html",
-                                cafe=mongo.db.cafes.find_one({'_id': ObjectId(cafe_id)}))
+                                cafe=mongo.db.cafes.find_one({'_id': ObjectId(cafe_id)}),
+                                review=mongo.db.reviews.find())
 
 
-#loads user profile page 
+#loads user profile page if user logged in, if user not logged in loads log in page 
 @app.route('/get_profile')
 def get_profile():
-        return render_template("myprofile.html",
-                                cafes=mongo.db.cafes.find()) 
-
         if session.get('USERNAME', None):
             username = session['USERNAME']
-
-            # Fetch user and related recipes
-            existing_user = users.find_one({'username': username})
-            users_password = users.find({'password': existing_user['_id']})
-            
-            return render_template('myprofile.html', user_data=existing_user, 
-                                    users_password=users_password)
-            
-        else:
+            return render_template("myprofile.html",
+                                    cafes=mongo.db.cafes.find(), user_data=existing_user, 
+                                    users_password=users_password)          
+        
         # User not signed in
-            return redirect(url_for('index'))                                                       
+        return render_template('index.html')                                                      
 
 
-#loads login page
+#loads login page and takes user to profile page if login details correct
 @app.route('/index', methods=['GET','POST'])
 def index():
     if request.method == 'POST':
@@ -74,7 +67,8 @@ def login():
     if login_user:
         if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password']) == login_user['password']:
             session['username'] = request.form['username']
-            return render_template('myprofile.html')
+            return render_template('myprofile.html',
+                                    cafes=mongo.db.cafes.find())
 
     return 'Invalid username/password combination'
 
@@ -90,7 +84,7 @@ def register():
             hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
             users.insert({'name' : request.form['username'], 'password' : hashpass})
             session['username'] = request.form['username']
-            return redirect(url_for('index'))
+            return render_template('myprofile.html')
         
         return 'That username already exists!'
 
@@ -102,6 +96,14 @@ def logout():
     session.pop('username', None)
     return render_template("cafes.html",
                                 cafes=mongo.db.cafes.find())
+
+
+#leaves user add review
+@app.route('/add_review', methods=['POST'])
+def add_review():
+    reviews = mongo.db.reviews
+    reviews.insert_one(request.form.to_dict())
+    return redirect(url_for('get_profile'))
 
 
 if __name__ == '__main__':

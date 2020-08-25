@@ -1,20 +1,4 @@
 {% extends 'base.html' %} {% block content %}
-
-
- <body>
-  <!-- Navigation Bar -->
-<nav class="nav-wrapper indigo">
-        <div class="container">
-         <a href="#" class="brand-logo">Coffee & Coastal Views</a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="home.html">Home</a></li>
-                <li><a href="{{ url_for('get_cafes') }}">Cafes</a></li>
-                <li><a href="{{ url_for('get_profile') }}">My Profile</a></li>
-                <li><a href="{{ url_for('index') }}" method="GET">Login</a></li>
-            </ul>
-        </div>    
-    </nav>
-<h1>Cafes Page</h1>
     {% for cafe in cafes %}
     <div class="row">
         <div class="col l3 m4 s12">
@@ -25,7 +9,7 @@
                 <div class="card-content">
                     <h6 class="card-title">{{cafe.name}}</h6>
                     <p>{{cafe.address}}</p>
-                    <a href="{{ url_for('get_individualcafe', cafe_id=(cafe._id)) }}" class="waves-effect waves-light btn">See More</a>    
+                    <a href="{{ url_for('get_individualcafe', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn">See More</a>    
             </div>
         </div>
     </div>
@@ -39,11 +23,3 @@
     
             
 {% endblock %}
-    <!--Import jQuery before materialize.js-->
-      <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-      <script type="text/javascript" src="js/materialize.min.js"></script>
-    
-
-<!-- Custom JavaScript -->
-<script src="{{ url_for('static', filename='js/app.js') }}">
-</script>

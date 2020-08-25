@@ -1,16 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-<nav>
-    <div class="nav-wrapper-light-blue darken-2">
-      <a href="#" class="brand-logo">Coffee & Coastal Views</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="home.html">Home</a></li>
-        <li><a href="{{ url_for('get_cafes') }}">Cafes</a></li>
-        <li><a href="{{ url_for('get_profile') }}">My Profile</a></li>
-        <li><a href="{{ url_for('index') }}" method="GET">Login</a></li>
-      </ul>
-    </div>
-  </nav>
-  <div class="container">
+ <div class="container">
     <div class="row">
         <div class="col s12 center-align"><h1>USER PROFILE</h1></div>  
     </div> 
@@ -22,7 +11,7 @@
      <div class="row">
         <div class="col s12 center-align">
             <h6>{{ session['username'] }} welcome to your profile! </h6>
-            <a href="{{ url_for('logout') }}" class="btn btn-primary btn-block">Log Out</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-primary btn-block light-blue lighten-3">Log Out</a>
         </div>  
     </div>
     </div>
@@ -45,5 +34,5 @@
             </div> 
         </div>
         </div>
-{% endfor %}  
+{% endfor %} 
 {% endblock %}  

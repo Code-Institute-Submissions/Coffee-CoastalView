@@ -15,7 +15,7 @@
     transition: box-shadow .25s;
     transition: box-shadow .25s, -webkit-box-shadow .25s;
     border-radius: 2px;
-    height: 475px!important;
+    height: 550px!important;
 }
 
 card .card-content .card-title {
@@ -24,9 +24,34 @@ card .card-content .card-title {
     margin-bottom: 3px;
 }
 
-#form {
-    border: 1px #598AB0;
+
+nav .brand-logo 
+{
+    position: absolute;
+    display: inline-block;
+    font-size: 15px !important;
+    padding: 0;
 }
+
+.section-contact h5 {
+  margin-bottom: 30px;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 1280px;
+    width: 100% !important;
+
+.card-panel {
+    -webkit-transition: -webkit-box-shadow .25s;
+    transition: -webkit-box-shadow .25s;
+    transition: box-shadow .25s;
+    transition: box-shadow .25s, -webkit-box-shadow .25s;
+    padding: 24px;
+    margin: .5rem 0 1rem 0;
+    border-radius: 2px;
+    background-color: #fff;
+    height: 330px !important;
 
 @media screen and (min-width: 1400px) {
 
@@ -42,5 +67,6 @@ card .card-content .card-title {
     border-radius: 2px;
     height: 550px!important;
 }
+
 
 }

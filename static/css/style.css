@@ -6,7 +6,8 @@
     line-height: 56px;
 }
 
-.card {
+
+.cafe {
     position: relative;
     margin: .5rem 0 1rem 0;
     background-color: #fff;
@@ -16,6 +17,19 @@
     transition: box-shadow .25s, -webkit-box-shadow .25s;
     border-radius: 2px;
     height: 550px!important;
+}
+
+.card .review{
+    position: relative;
+    margin: .5rem 0 1rem 0;
+    background-color: #fff;
+    -webkit-transition: -webkit-box-shadow .25s;
+    transition: -webkit-box-shadow .25s;
+    transition: box-shadow .25s;
+    transition: box-shadow .25s, -webkit-box-shadow .25s;
+    border-radius: 2px;
+    height: 150px!important;
+    border: 1px #598AB0 !important
 }
 
 card .card-content .card-title {

@@ -1,8 +1,9 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container">
+
 	<div class="row">
 		<div class="col s12 center-align">
-			<h1>{{cafe.name}}</h1> </div>
+			<h1>{{cafe.name}}</h1> 
+            </div>
 	</div>
 	<div class="row">
 		<div class="col s12 center-align"> <img src="../../{{cafe.imagepath}}"> </div>
@@ -11,7 +12,7 @@
 		<div class="col s12 center-align">
 			<h5>{{cafe.address}}</h5> </div>
 	</div>
-	<div class="container">
+	
         <div class="row">
 			<div class="col s12 center-align">
 				<h5>RATING</h5>
@@ -24,19 +25,20 @@
 				<h5>REVIEWS</h5> 
             </div>
 		</div>
-	</div> 
-	{% for review in cafe.reviews %}
+	
+  
     <div class="row">
+      {% for review in cafe.reviews %}
         <div class="col l3 m4 s12">
-            <div class="card">
+            <div class="card review">
                 <div class="card-content">
 					<h6 class="card-title">{{review.details}}</h6>
-					<p> "{{review.user_name}}" </p>
-                    
+					<p> "{{review.user_name}}" </p>    
+                </div>
             </div>
         </div>
-    </div>
-	</div>
+    </div>            
+    {% endfor %}
 	<div class="row">
 		<form action="{{ url_for('add_review') }}" method="POST" class="col s12 box">
 			<div class="form-group">
@@ -56,5 +58,5 @@
 			<button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Add Review </button>
 		</form>
 	</div> 
-    {% endfor %}
+    
     {% endblock %}

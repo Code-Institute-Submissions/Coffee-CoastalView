@@ -19,6 +19,15 @@
     height: 550px!important;
 }
 
+/* image setup */
+.card.small .card-image, .card.medium .card-image, .card.large .card-image {
+    max-height: 70%;
+}
+
+.div {
+    border: 2px solid black
+} 
+
 .card .review{
     position: relative;
     margin: .5rem 0 1rem 0;
@@ -55,6 +64,7 @@ nav .brand-logo
     margin: 0 auto;
     max-width: 1280px;
     width: 100% !important;
+}
 
 .card-panel {
     -webkit-transition: -webkit-box-shadow .25s;

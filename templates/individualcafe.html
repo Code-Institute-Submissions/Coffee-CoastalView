@@ -29,30 +29,28 @@
 				<h5>RATING</h5> 
             </div>
             <div class="row">
-             {% for rating in cafe.ratings %}
-                <div class="col s12 rating-box center-align">
+            
+                <div class="col rating-box offset-m3 offset-s2 offset-l4">
                     <!-- displays shaded stars to match average rating -->
                     {% for i in range(1,6) %}
-                        {% if rating.details|int < i %}
-                        <i class="material-icons blue-text text-darken-2 left recipe-rating">star_border</i>
+                        {% if cafe.ratings_avg|int < i %}
+                        <i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i>
                         {% else %}
-                        <i class="material-icons blue-text text-darken-2 left recipe-rating">star</i>
+                        <i class="material-icons blue-text text-darken-2 left cafe-rating">star</i>
                         {% endif %}
                     {% endfor %}
+                    <a class="waves-effect waves-light btn btn-flat recipe-social modal-trigger light-blue lighten-3" href="#RateModal">
+                    <i class="material-icons left">free_breakfast</i>Rate This Cafe!</a>
                 </div>
-              {% endfor %}   
+               
             </div>
         </div>
     </div>
-    <div class="row">
-        <a class="waves-effect waves-light btn btn-flat recipe-social modal-trigger" href="#RateModal">
-        <i class="material-icons left">stars</i>rate</a>
-    </div>     
     <!-- Rate modal -->
     <div id="RateModal" class="modal">
-       <!----> <form method="POST" action="#">
+		<form method="POST" action="{{ url_for('rate_cafe', cafe_id=cafe._id) }}">
             <div class=" modal-content modal-rating">
-                <p>How much do you like this recipe?</p>
+                <p>Tell us how much do you like this Cafe!</p>
                 <div class="rating">
                     <input id="rating5" type="radio" name="rating" value="5">
                     <label for="rating5">5</label>
@@ -67,7 +65,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="modal-close waves-effect waves-blue btn-flat blue-text" type="submit"
+                <button class="modal-close waves-effect waves-blue btn-flat blue-text light-blue lighten-3" type="submit"
                         name="action">Rate
                 </button>
             </div>
@@ -75,7 +73,7 @@
     </div>
     <!--Reviews Section-->
     <div class="section">
-		<div class="row">
+		<div class="row" id="review-list">
 			<div class="col s12 center-align">
 				<h5>REVIEWS</h5> 
             </div>
@@ -93,6 +91,7 @@
 		{% endfor %}
 		</div>            
 	</div>
+    
     <!--Add Review-->
 	<div class="row">
 		<form action="{{ url_for('add_review') }}" method="POST" class="col s12 box">

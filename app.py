@@ -51,6 +51,37 @@ def get_individualcafe(cafe_id,user_id):
         # User not signed in
         return render_template('index.html')                     
 
+@app.route('/rate_cafe/<cafe_id>', methods=['POST'])
+def rate_cafe(cafe_id):
+    """ Updates the cafe rating and number of ratings
+
+    :return
+        Redirect to the individual cafe page
+    """
+    try:
+        # calculate new rating
+        cafes = mongo.db.cafes
+        current_cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
+        calculated_rating_total = int(current_cafe['ratings_total']) + 1
+        calculated_sum = int(current_cafe['ratings_sum']) + int(request.form.get('rating'))
+        # rounded average for simplicity
+        calculated_avg = round(calculated_sum / calculated_rating_total)
+        # update record
+        cafes.update_one({'_id': ObjectId(cafe_id)}, {"$set": {
+            'ratings_total': calculated_rating_total,
+            'ratings_sum': calculated_sum,
+            'rating_avg': calculated_avg
+        }}, upsert=True)
+
+    except:
+        # raises a 404 error if any of these fail
+        return abort(404, description="Resource not found")
+    return redirect(url_for('get_individualcafe', cafe_id=cafe_id))
+
+@app.route('/edit_user/<user_name>')
+def edit_user(user_name):
+    user =  mongo.db.users.find_one({"_id": ObjectId(user_id)})
+    return render_template('index.html')    
 
 #loads user profile page if user logged in, if user not logged in loads log in page 
 @app.route('/get_profile')

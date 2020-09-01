@@ -18,7 +18,7 @@
     <div class="section">
         <div class="row">
             <div class="col s12 center-align">
-                <a href="{{ url_for('get_individualcafe', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">Add to Favourites</a>
+                <a href="{{ url_for('add_favourite', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">Add to Favourites</a>
             </div>
         </div>
     </div>    
@@ -46,22 +46,23 @@
             </div>
         </div>
     </div>
+    
     <!-- Rate modal -->
     <div id="RateModal" class="modal">
-		<form method="POST" action="{{ url_for('rate_cafe', cafe_id=cafe._id) }}">
+		<form method="POST" action="{{ url_for('rate_cafe', cafe_id=cafe._id,user_id=user_id) }}">
             <div class=" modal-content modal-rating">
                 <p>Tell us how much do you like this Cafe!</p>
                 <div class="rating">
-                    <input id="rating5" type="radio" name="rating" value="5">
-                    <label for="rating5">5</label>
-                    <input id="rating4" type="radio" name="rating" value="4">
-                    <label for="rating4">4</label>
-                    <input id="rating3" type="radio" name="rating" value="3">
-                    <label for="rating3">3</label>
+                    <input id="rating1" type="radio" name="rating" value="1">
+                    <label for="rating1"><i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i></label>
                     <input id="rating2" type="radio" name="rating" value="2">
-                    <label for="rating2">2</label>
-                    <input id="rating1" type="radio" name="rating" value="1" checked>
-                    <label for="rating1">1</label>
+                    <label for="rating2"><i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i></label>
+                    <input id="rating3" type="radio" name="rating" value="3">
+                    <label for="rating3"><i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i></label>
+                    <input id="rating4" type="radio" name="rating" value="4">
+                    <label for="rating4"><i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i></label>
+                    <input id="rating5" type="radio" name="rating" value="5" checked>
+                    <label for="rating5"><i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i></label>
                 </div>
             </div>
             <div class="modal-footer">
@@ -73,7 +74,7 @@
     </div>
     <!--Reviews Section-->
     <div class="section">
-		<div class="row" id="review-list">
+		<div class="row">
 			<div class="col s12 center-align">
 				<h5>REVIEWS</h5> 
             </div>
@@ -84,7 +85,7 @@
 				<div class="card medium">
 					<div class="card-content">
 						<h6 class="card-title">{{review.details}}</h6>
-						<p> "{{review.user_name}}" </p>    
+                        <h6 class="card-title">{{review.user_name}}</h6>  
 					</div>
 				</div>
 			</div>
@@ -94,21 +95,14 @@
     
     <!--Add Review-->
 	<div class="row">
-		<form action="{{ url_for('add_review') }}" method="POST" class="col s12 box">
-			<div class="form-group">
-				<label for="review_user">reviewed by</label>
-				<input type="text" class="form-control" name="username" placeholder="Username" value="{{ session['username'] }}" ">
+		
+        <form method="POST" class="col s12 box" action="{{ url_for('add_review', cafe_id=cafe._id, user_id=user_id) }}">
+            <div class="form-group">
+                <label for="review_user">Write Review Below</label>
+                <div class="input-field col s12 box">
+                    <textarea id="textarea1" name="details" class="materialize-textarea"></textarea>
+                </div>
             </div>
-        <div class="form-group ">
-            <label for="review_for ">review for</label>
-            <input type="text" class="form-control " name="cafe " placeholder="Cafe " value="{{ cafe.name }} ""> 
-        </div>
-		<div class="form-group">
-			<label for="review_user">Write Review Below</label>
-			<div class="input-field col s12 box">
-				<textarea id="textarea1" name="review" class="materialize-textarea"></textarea>
-			</div>
-		</div>
 			<button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Add Review </button>
 		</form>
 	</div> 

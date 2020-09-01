@@ -1,3 +1,23 @@
+import os
+import bcrypt
+from flask import Flask, render_template, redirect, request, url_for, session, g
+from flask_pymongo import PyMongo
+from bson.objectid import ObjectId 
+#from flask_debugtoolbar import DebugToolbarExtension
+#import logging
+
+
+app = Flask(__name__)
+app.config["MONGO_DBNAME"] = 'coffee_coastalview'
+app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb+srv://JOS:Malteasers1!@cluster0.qn0az.mongodb.net/coffee_coastalview?retryWrites=true&w=majority')
+#app.config["SECRET_KEY"] = os.environ.get('SESSION_SECRET')    
+#app.secret_key = 'super secret key'
+#app.config['SESSION_TYPE'] = 'filesystem'
+#logging.basicConfig(level=logging.DEBUG)
+#toolbar = DebugToolbarExtension(app)
+mongo = PyMongo(app)
+
+
 #loads cafe page with all cafes in Mongo
 @app.route('/get_cafes')
 def get_cafes():
@@ -24,6 +44,7 @@ def get_individualcafe(cafe_id,user_id):
             username = session['USERNAME']
             app.logger.info('Username id is ' + username)
             cafe=mongo.db.cafes.find_one({'_id': ObjectId(cafe_id)})
+            #reviews=mongo.db.cafes.aggregate([{ "$lookup": { "from": "users" , "localField": "user_id", "foreignField" : "user_id", "as": "userdetails" }  }])
             return render_template("individualcafe.html",cafe=cafe,user_id=user_id
                                 ,
                                 #user_id=mongo.db.users.find_one({'username' : username}),
@@ -33,14 +54,24 @@ def get_individualcafe(cafe_id,user_id):
         return render_template('index.html')                     
 
 
+
+
+
+
 #loads user profile page if user logged in, if user not logged in loads log in page 
 @app.route('/get_profile')
 def get_profile():
         result = session.get('USERNAME', None)
         if result:
             username = session['USERNAME']
+            user=mongo.db.users.find_one({'name' : username})
+            cafes = mongo.db.cafes.find()
+            app.logger.info('cafes are ' + str(cafes))
+            #favourites = mongo.db.users.find({ '_id' : ObjectId(user['_id'])} , {'favourites' : 1})
+            cafes = mongo.db.cafes.find({"favourites.user_id" : ObjectId(user['_id']) } )
+            app.logger.info('User id is ' + str(user['_id']) + " favourites are " + str(cafes))
             return render_template("myprofile.html",
-                                    cafes=mongo.db.cafes.find(), user_name=username)          
+                                    cafes=cafes, user_name=username)          
         
         # User not signed in
         return render_template('index.html')                                                      
@@ -70,14 +101,10 @@ def get_landing():
 @app.route('/index', methods=['GET','POST'])
 def index():
     app.logger.info('Jade:Processing default request in app.py')
-    if request.method == 'POST':
-        session.pop('user', None)
 
-        if request.form['password'] == 'password':
-            session['user'] = request.form['username']
-            return redirect(url_for('get_cafes'))
 
     if request.method == 'GET':
+        app.logger.info('Post called in index ')
         return render_template('index.html')
 
     if 'username' in session:
@@ -90,12 +117,18 @@ def index():
 #checks to see user login details exist/are correct and if correct returns user to cafes page
 @app.route('/login', methods=['POST'])
 def login():
+    if request.method == 'POST':
+        session.pop('USERNAME', None)
+        app.logger.info('Post called in login, removed USERNAME from cookies ')
+
     users = mongo.db.users
     login_user = users.find_one({'name' : request.form['username']})
-    
+    form_password = request.form['pass'].encode('utf-8')
+    login_user_password = login_user['password']
+    decrypted_password = bcrypt.hashpw(form_password, login_user_password)
     if login_user:
         #ERROR: you never defined bcrypt
-        if bcrypt.hashpw(request.form['pass'].encode('utf-8'), login_user['password']) == login_user['password']:
+        if  decrypted_password== login_user_password:
             # create a session cookie
             session['USERNAME'] = request.form['username']
             cafes=mongo.db.cafes.find()
@@ -103,9 +136,31 @@ def login():
     return 'Invalid username/password combination'
 
 
+@app.route('/edit_user')
+def edit_user():
+    username = session['USERNAME']
+    user =  mongo.db.users.find_one({"name": username})
+    return render_template('edituser.html',user=user)  
 
-    # GET request
-    return render_template('sign-in.html', failf=False)
+
+#checks to see user login details exist/are correct and if correct returns user to cafes page
+@app.route('/update_user', methods=['POST'])
+def update_user():
+    if request.method == 'POST':
+        app.logger.info('Post called in update_user ')
+    
+    username = request.form['user_name']
+    user_id = request.form['user_id']
+    user =  mongo.db.users.find_one({"_id": ObjectId(user_id)})
+    password = request.form['user_password']
+    hashpass = bcrypt.hashpw(request.form['user_password'].encode('utf-8'), bcrypt.gensalt())
+    #app.logger.info('password encrypted is  ' + str(encryptted))
+    mongo.db.users.update_one({'_id': user['_id']},
+                        {"$set": {'name': username }}, upsert=True)
+    return render_template("myprofile.html",
+                                    cafes=mongo.db.cafes.find(), user_name=username)
+
+
 
 #brings user to registration page
 @app.route('/register', methods=['POST', 'GET'])
@@ -124,9 +179,30 @@ def register():
 
     return render_template('register.html')
 
+#db.users.update({"name" : "JadeO"}, { $addToSet: { favourites: ObjectId("5f4bca9026e1755ced5287ba") }} )
+@app.route('/add_favourite/<cafe_id>/<user_id>')
+def add_favourite(cafe_id,user_id):
+    """ Updates the user favourites
 
-@app.route('/rate_cafe/<cafe_id>', methods=['POST'])
-def rate_cafe(cafe_id):
+    :return
+        Redirect to the individual cafe page on completion
+    """
+    try:
+
+        username = session['USERNAME']
+        cafes = mongo.db.cafes
+        app.logger.info('username = ' + str(username) + ' cafe_id= ' + str(cafe_id) + ' user_id= ' + str(user_id))
+        cafes.update( { "_id" : ObjectId(cafe_id)} , {  "$push" : { "favourites" : { "user_id" : ObjectId(user_id) , "user_name" : username } } })
+    except:
+        # raises a 404 error if any of these fail
+        return abort(404, description="Resource not found")
+    return redirect(url_for('get_individualcafe', cafe_id=cafe_id,user_id=user_id))
+
+
+
+
+@app.route('/rate_cafe/<cafe_id>/<user_id>', methods=['POST'])
+def rate_cafe(cafe_id,user_id):
     """ Updates the cafe rating and number of ratings
 
     :return
@@ -135,22 +211,23 @@ def rate_cafe(cafe_id):
     try:
         # calculate new rating
         cafes = mongo.db.cafes
+        new_rating = int(request.form.get('rating'))
         current_cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
         calculated_rating_total = int(current_cafe['ratings_total']) + 1
-        calculated_sum = int(current_cafe['ratings_sum']) + int(request.form.get('rating'))
+        calculated_sum = int(current_cafe['ratings_sum']) + int(new_rating)
         # rounded average for simplicity
         calculated_avg = round(calculated_sum / calculated_rating_total)
         # update record
         cafes.update_one({'_id': ObjectId(cafe_id)}, {"$set": {
             'ratings_total': calculated_rating_total,
             'ratings_sum': calculated_sum,
-            'rating_avg': calculated_avg
+            'ratings_avg': calculated_avg
         }}, upsert=True)
 
     except:
         # raises a 404 error if any of these fail
         return abort(404, description="Resource not found")
-    return redirect(url_for('get_individualcafe', cafe_id=cafe_id))
+    return redirect(url_for('get_individualcafe', cafe_id=cafe_id,user_id=user_id))
 
 
 
@@ -163,8 +240,29 @@ def logout():
 
 
 #leaves user add review
-@app.route('/add_review', methods=['POST'])
-def add_review():
-    reviews = mongo.db.reviews
-    reviews.insert_one(request.form.to_dict())
+@app.route('/add_review/<cafe_id>/<user_id>', methods=['POST'])
+def add_review(cafe_id,user_id):
+    username = session['USERNAME']
+    cafes = mongo.db.cafes
+    details = request.form.get('details')
+    app.logger.info('Details = ' + str(details) + ' username = ' + str(username) + ' cafe_id= ' + str(cafe_id) + ' user_id= ' + str(user_id))
+    cafes.update( { "_id" : ObjectId(cafe_id)} , {  "$push" : { "reviews" : { "user_id" : ObjectId(user_id), "user_name" : username, "details" : details} } })
+
     return redirect(url_for('get_profile'))
+    
+
+
+#if __name__ == '__main__':
+    #app.secret_key = 'mysecret'
+   # app.run(debug=True)
+
+
+
+    #sess.init_app(app)
+
+app.debug = True
+#app.run()
+
+if __name__ == '__main__':
+    app.secret_key = 'mysecret'
+    app.run(debug=True)

@@ -39,7 +39,7 @@
                             {{cafe.name}}<br>
                             {{cafe.address}}
                         </p>
-                        <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                        <a href="{{ url_for('remove_favourite', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content"><i class="material-icons">done_outline</i></a>
                     </li>
                 </ul>
             </div> 

@@ -59,9 +59,6 @@ def get_individualcafe(cafe_id,user_id):
 
 
 
-
-
-
 #loads user profile page if user logged in, if user not logged in loads log in page 
 @app.route('/get_profile')
 def get_profile():

@@ -206,6 +206,12 @@ def add_favourite(cafe_id,user_id):
 
 #db.users.update({"name" : "JadeO"}, { $addToSet: { favourites: ObjectId("5f4bca9026e1755ced5287ba") }} )
 
+#requested cafe to be added to database
+@app.route('/request_cafe', methods=['POST'])
+def request_cafe():
+    mongo.db.requested_cafes.insert_one(request.form.to_dict())
+    return render_template("landing.html")
+
 
 @app.route('/remove_favourite/<cafe_id>/<user_id>')
 def remove_favourite(cafe_id,user_id):

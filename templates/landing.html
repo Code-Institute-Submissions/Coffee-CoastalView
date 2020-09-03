@@ -96,18 +96,20 @@
           </div>
         </div>
         <div class="col s12 m6">
+        <form action="{{ url_for('request_cafe') }}" method="POST" >
           <div class="card-panel grey lighten-3">
             <h5>Please fill out this form</h5>
             <div class="input-field">
-              <input type="text" placeholder="Cafe Name" id="cafename">
+              <input type="text"  name="cafe_name" placeholder="Cafe Name" id="cafename">
               <label for="cafename">Cafe Name</label>
             </div>
             <div class="input-field">
-              <input type="text" placeholder="Cafe Location" id="cafelocation">
+              <input type="text" name="cafe_location" placeholder="Cafe Location" id="cafelocation">
               <label for="cafelocation">Cafe Location</label>
             </div>
-            <input type="submit" value="Submit" class="btn">
+            <button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Request Cafe</button>
           </div>
+          </form>
         </div>
       </div>
     </div>

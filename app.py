@@ -18,7 +18,6 @@ app.config["MONGO_URI"] = os.getenv('MONGO_URI', 'mongodb+srv://JOS:Malteasers1!
 mongo = PyMongo(app)
 
 
-
 #loads cafe page with all cafes in Mongo
 @app.route('/get_cafes')
 def get_cafes():
@@ -43,11 +42,15 @@ def get_individualcafe(cafe_id,user_id):
         result = session.get('USERNAME', None)
         if result:
             username = session['USERNAME']
-            app.logger.info('Username id is ' + username)
+            cafes=mongo.db.cafes.find()
+            count = cafes.count()
             cafe=mongo.db.cafes.find_one({'_id': ObjectId(cafe_id)})
+            users_reviews = mongo.db.cafes.find({"_id" : ObjectId(cafe_id) ,"reviews.user_id" : ObjectId(user_id) } )
+            count = users_reviews.count()
+            app.logger.info( " reviews.user_id : " + str(user_id) +  "cafe_id : " + str(cafe_id))
             #reviews=mongo.db.cafes.aggregate([{ "$lookup": { "from": "users" , "localField": "user_id", "foreignField" : "user_id", "as": "userdetails" }  }])
             return render_template("individualcafe.html",cafe=cafe,user_id=user_id
-                                ,
+                                ,user_reviews=users_reviews
                                 #user_id=mongo.db.users.find_one({'username' : username}),
                                 #users_review=mongo.db.cafes.reviews.find_one({'_1': ObjectId(user_id)})
                                 )
@@ -66,11 +69,11 @@ def get_profile():
         if result:
             username = session['USERNAME']
             user=mongo.db.users.find_one({'name' : username})
-            cafes = mongo.db.cafes.find()
-            app.logger.info('cafes are ' + str(cafes))
+
             #favourites = mongo.db.users.find({ '_id' : ObjectId(user['_id'])} , {'favourites' : 1})
             cafes = mongo.db.cafes.find({"favourites.user_id" : ObjectId(user['_id']) } )
-            app.logger.info('User id is ' + str(user['_id']) + " favourites are " + str(cafes))
+
+            app.logger.info('Cafes = ' + str(cafes.count()) + ' User id is ' + str(user['_id']) + " favourites are " + str(cafes))
             return render_template("myprofile.html",
                                     cafes=cafes, user_name=username, user_id=user['_id'])          
         
@@ -101,7 +104,6 @@ def get_landing():
 #loads login page and takes user to profile page if login details correct
 @app.route('/index', methods=['GET','POST'])
 def index():
-    app.logger.info('Jade:Processing default request in app.py')
 
 
     if request.method == 'GET':
@@ -110,8 +112,8 @@ def index():
 
     if 'username' in session:
         return 'You are logged in as ' + session['USERNAME']
-
-    return render_template("myprofile.html",
+    cafes = mongo.db.cafes.find( )
+    return render_template("myprofile.html",cafes,user_name="not logged in",
                             user=mongo.db.users.find())
 
 
@@ -137,7 +139,6 @@ def login():
     else:
         return 'Invalid username/password combination'
     return render_template("landing.html")
-    
 
 @app.route('/edit_user')
 def edit_user():
@@ -160,8 +161,8 @@ def update_user():
     #app.logger.info('password encrypted is  ' + str(encryptted))
     mongo.db.users.update_one({'_id': user['_id']},
                         {"$set": {'name': username }}, upsert=True)
-    return render_template("myprofile.html",
-                                    cafes=mongo.db.cafes.find(), user_name=username)
+    cafes = mongo.db.cafes.find({"favourites.user_id" : ObjectId(user_id) } )
+    return render_template('myprofile.html',cafes=cafes, user_name=username,user_id=user_id) 
 
 
 
@@ -176,7 +177,7 @@ def register():
             hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'), bcrypt.gensalt())
             users.insert({'name' : request.form['username'], 'password' : hashpass})
             session['USERNAME'] = request.form['username']
-            return render_template('myprofile.html')
+            return render_template('cafes.html')
         
         return 'That username already exists!'
 
@@ -197,6 +198,7 @@ def add_favourite(cafe_id,user_id):
         cafe =  cafes.find_one({"_id": ObjectId(cafe_id)})
         app.logger.info('username = ' + str(username) + ' cafe_id= ' + str(cafe_id) + ' user_id= ' + str(user_id))
         cafes.update( { "_id" : ObjectId(cafe_id)} , {  "$push" : { "favourites" : { "user_id" : ObjectId(user_id) , "user_name" : username } } })
+        cafe =  cafes.find_one({"_id": ObjectId(cafe_id)})
     except:
         # raises a 404 error if any of these fail
         return abort(404, description="Resource not found")
@@ -217,12 +219,13 @@ def remove_favourite(cafe_id,user_id):
         username = session['USERNAME']
         cafes = mongo.db.cafes
         cafe =  cafes.find_one({"_id": ObjectId(cafe_id)})
-        #app.logger.info('username = ' + str(username) + ' cafe_id= ' + str(cafe_id) + ' user_id= ' + str(user_id))
-        cafes.update( { "_id" : ObjectId(cafe_id) } , { "$pull" : { "favourites" : { "user_id" : ObjectId("user_id")} } } )
+        app.logger.info('remove_favourite: username = ' + str(username) + ' cafe_id= ' + str(cafe_id) + ' user_id= ' + str(user_id))
+        cafes.update( { "_id" : ObjectId(cafe_id) } , { "$pull" : { "favourites" : { "user_id" : ObjectId(user_id)} } } )
+        cafes = mongo.db.cafes.find({"favourites.user_id" : ObjectId(user_id) } )
     except:
         # raises a 404 error if any of these fail
         return abort(404, description="Resource not found")
-    return render_template('myprofile.html')
+    return render_template('myprofile.html',cafes=cafes, user_name=username,user_id=user_id)
 
 
 
@@ -249,7 +252,7 @@ def rate_cafe(cafe_id,user_id):
             'ratings_sum': calculated_sum,
             'ratings_avg': calculated_avg
         }}, upsert=True)
-
+        cafe =  cafes.find_one({"_id": ObjectId(cafe_id)})
     except:
         # raises a 404 error if any of these fail
         return abort(404, description="Resource not found")
@@ -271,10 +274,11 @@ def add_review(cafe_id,user_id):
     username = session['USERNAME']
     cafes = mongo.db.cafes
     details = request.form.get('details')
+    cafe =  cafes.find_one({"_id": ObjectId(cafe_id)})
     app.logger.info('Details = ' + str(details) + ' username = ' + str(username) + ' cafe_id= ' + str(cafe_id) + ' user_id= ' + str(user_id))
     cafes.update( { "_id" : ObjectId(cafe_id)} , {  "$push" : { "reviews" : { "user_id" : ObjectId(user_id), "user_name" : username, "details" : details} } })
-
-    return render_template('myprofile.html')
+    cafe =  cafes.find_one({"_id": ObjectId(cafe_id)}) #refresh the list
+    return render_template('individualcafe.html', cafe=cafe,user_id=user_id)
 
 
 
@@ -290,12 +294,14 @@ def remove_review(cafe_id,user_id):
         username = session['USERNAME']
         cafes = mongo.db.cafes
         cafe =  cafes.find_one({"_id": ObjectId(cafe_id)})
-        app.logger.info('username = ' + str(username) + ' cafe_id= ' + str(cafe_id) + ' user_id= ' + str(user_id))
-        cafes.update( { "_id" : ObjectId(cafe_id) } , { "$pull" : { "reviews" : { "user_id" : ObjectId("user_id")} } } )
+        
+        result = cafes.update( { "_id" : ObjectId(cafe_id) } , { "$pull" : { "reviews" : { "user_id" : ObjectId(user_id)} } } )
+        app.logger.info('Result = ' + str(result) + ' username = ' + str(username) + ' cafe_id= ' + str(cafe_id) + ' user_id= ' + str(user_id))
+        cafe =  cafes.find_one({"_id": ObjectId(cafe_id)}) #refresh the list
     except:
         # raises a 404 error if any of these fail
         return abort(404, description="Resource not found")
-    return redirect('individualcafe.html', cafe=cafe,user_id=user_id)
+    return render_template('individualcafe.html', cafe=cafe,user_id=user_id)
 
 
 #if __name__ == '__main__':

@@ -80,18 +80,25 @@
             </div>
 		</div>
     	<div class="row">
-		{% for review in cafe.reviews %}	
+        {% for review in cafe.reviews %}	
+            
 		    <div class="col s12 m6 l4 xl3">
 				<div class="card medium">
 					<div class="card-content">
 						<h6 class="card-title">{{review.details}}</h6>
-                        <h6 class="card-title">{{review.user_name}}</h6>  
+                        <h6 class="card-title">{{review.user_name}}</h6>
+                        {% if review.user_name == session['USERNAME'] %}  
+                        <p></p>
+                        <a href="{{ url_for('remove_review', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content"><i class="material-icons">done_outline</i>Delete</a>
+                        {% endif %}
 					</div>
 				</div>
-			</div>
+            </div>
+            
 		{% endfor %}
 		</div>            
-	</div>
+    </div>
+
     
     <!--Add Review-->
 	<div class="row">
@@ -100,7 +107,7 @@
             <div class="form-group">
                 <label for="review_user">Write Review Below</label>
                 <div class="input-field col s12 box">
-                    <textarea id="textarea1" name="details" class="materialize-textarea"></textarea>
+                    <textarea id="textarea1" name="details" class="materialize-textarea" required="required"></textarea>
                 </div>
             </div>
 			<button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Add Review </button>

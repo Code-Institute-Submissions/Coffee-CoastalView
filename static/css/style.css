@@ -41,10 +41,8 @@
     border: 1px #598AB0 !important
 }
 
-card .card-content .card-title {
-    display: block;
-    line-height: 32px;
-    margin-bottom: 3px;
+i:hover {
+    color: red;
 }
 
 

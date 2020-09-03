@@ -16,8 +16,7 @@
         <div class="col s12 center-align">
             <h6>My Details</h6>
             <p>Username: {{ user_name }}</p> 
-            <p>Password: {{ password }} </p>
-            <a href="{{ url_for('edit_user') }}" class="waves-effect waves-light btn light-blue lighten-3">Update Details</a>
+            <a href="{{ url_for('edit_user') }}" class="waves-effect waves-light btn light-blue lighten-3">Change Username</a>
         </div> 
 
     </div> 
@@ -26,9 +25,9 @@
      </div> 
  
        
-        <div class="col s12 center-align"><h4>CAFES I WANT TO VISIT</h4></div>
+ <div class="col s12 center-align"><h4>CAFES I WANT TO VISIT</h4></div>
         
-        {% for cafe in cafes %}
+ {% for cafe in cafes %}
  <div class="container">
         <div class="row">
             <div class="col s6 offset-m3">    
@@ -39,7 +38,13 @@
                             {{cafe.name}}<br>
                             {{cafe.address}}
                         </p>
-                        <a href="{{ url_for('remove_favourite', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content"><i class="material-icons">done_outline</i></a>
+                        {% for favourite in cafe.favourites %}
+                            {% if favourite.user_name == session['USERNAME'] %}  
+                            <p></p>
+                            <a href="{{ url_for('remove_favourite', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content"><i class="material-icons">done_outline</i>Delete</a>
+                            {% endif %}
+                        {% endfor %}
+                        
                     </li>
                 </ul>
             </div> 

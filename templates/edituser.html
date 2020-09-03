@@ -1,26 +1,27 @@
 {% extends 'base.html' %} {% block content %}
-<h3>Update Details</h3>
+<h3>Update UserName</h3>
+<div class="container">
 <div class="row">
-    <form action="{{ url_for('edit_user') }}" method="POST"  class="col s12">
+    <div class="col s12">
+    <form action="{{ url_for('update_user') }}" method="POST"  class="col s12">
         <div class="row">
             <div class="row">
-                <div class="input-field col s12">
-                    <i class="material-icons prefix">poll</i>
-                    <select id="user" name="name">
-                  <option value="" disabled selected>Choose Category</option>
-                 
-                      <option value="{{ user.name }}">{{ user.name }}</option>
-                 
-                </select>
+                <div class="input-field">
+                    <input type="hidden" name="user_id" id="user_id" required="required" value="{{user._id}}"/>
                 </div>
+                <div class="input-field">
+                    <input type="text" name="user_name" placeholder="Enter New Username" id="user_name" required="required"/>
+                    <label for="UserName">Username : {{user.name}}</label>
+                </div>
+              
             </div>
         </div>
+    
         <div class="row">
-            <button class="btn waves-effect waves-light" type="submit" name="action">Add Task
-                <i class="material-icons right">playlist_add</i>
-             </button>
+            <button class="btn waves-effect waves-light light-blue lighten-3" type="submit" name="action">Update Username</button>
         </div>
     </form>
 </div>
-
+</div>
+</div>
 {% endblock %}

@@ -25,7 +25,7 @@ mongo = PyMongo(app)
 
 # loads cafe page with all cafes in Mongo
 
-@app.route('/')
+#@app.route('/')
 @app.route('/get_landing')
 def get_landing():
     result = session.get('USERNAME', None)

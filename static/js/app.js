@@ -12,6 +12,6 @@
       });   
       
 
-    // Modal Init
+// Modal Init
     let modalElems = document.querySelectorAll('.modal');
     M.Modal.init(modalElems);      

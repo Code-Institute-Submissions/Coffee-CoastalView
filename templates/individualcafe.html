@@ -89,7 +89,7 @@
                         <h6 class="card-title">{{review.user_name}}</h6>
                         {% if review.user_name == session['USERNAME'] %}  
                         <p></p>
-                        <a href="{{ url_for('remove_review', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content"><i class="material-icons">done_outline</i>Delete</a>
+                        <a href="{{ url_for('remove_review', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content"><i class="material-icons">close</i>Delete</a>
                         {% endif %}
 					</div>
 				</div>

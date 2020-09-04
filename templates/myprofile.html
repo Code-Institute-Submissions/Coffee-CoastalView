@@ -1,54 +1,47 @@
 {% extends 'base.html' %} {% block content %}
- <div class="container">
-    <div class="row">
-        <div class="col s12 center-align">
-            <h1>WELCOME</h1>
-            <h6>{{ user_name }} welcome to your profile! </h6>
-            <a href="{{ url_for('logout') }}" class="waves-effect waves-light btn light-blue lighten-3">Log Out</a>
-    </div>
-        </div>  
-    </div> 
- <div class="section">
-    <div class="row">
-        <div class="col s12 center-align">
-            <h4>My Details</h4>
-        </div>  
-        <div class="col s12 center-align">
-            <h6>My Details</h6>
-            <p>Username: {{ user_name }}</p> 
-            <a href="{{ url_for('edit_user') }}" class="waves-effect waves-light btn light-blue lighten-3">Change Username</a>
-        </div> 
-
-    </div> 
-    
-    </div>
-     </div> 
- 
-       
- <div class="col s12 center-align"><h4>CAFES I WANT TO VISIT</h4></div>
-        
- {% for cafe in cafes %}
- <div class="container">
-        <div class="row">
-            <div class="col s6 offset-m3">    
-                <ul class="collection offset-m3" >   
-                    <li class="collection-item avatar">
-                        
-                        <p>
-                            {{cafe.name}}<br>
-                            {{cafe.address}}
-                        </p>
-                        {% for favourite in cafe.favourites %}
-                            {% if favourite.user_name == session['USERNAME'] %}  
-                            <p></p>
-                            <a href="{{ url_for('remove_favourite', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content"><i class="material-icons">done_outline</i>Delete</a>
-                            {% endif %}
-                        {% endfor %}
-                        
-                    </li>
-                </ul>
-            </div> 
-        </div>
-        </div>
+<div class="container">
+   <div class="row">
+      <div class="col s12 center-align">
+         <h1>WELCOME</h1>
+         <h6>{{ user_name }} welcome to your profile! </h6>
+      </div>
+   </div>
+</div>
+<div class="section">
+   <div class="row">
+      <div class="col s12 center-align">
+         <h4>My Details</h4>
+      </div>
+      <div class="col s12 center-align">
+         <h6>My Details</h6>
+         <p>Username: {{ user_name }}</p>
+         <a href="{{ url_for('edit_user') }}" class="waves-effect waves-light btn light-blue lighten-3">Change Username</a>
+      </div>
+   </div>
+</div>
+</div> 
+<div class="col s12 center-align">
+   <h4>CAFES I WANT TO VISIT</h4>
+</div>
+{% for cafe in cafes %}
+<div class="container">
+   <div class="row">
+      <div class="col s6 offset-m3">
+         <ul class="collection offset-m3" >
+            <li class="collection-item avatar">
+               <p>
+                  {{cafe.name}}<br>
+                  {{cafe.address}}
+               </p>
+               {% for favourite in cafe.favourites %}
+               {% if favourite.user_name == session['USERNAME'] %}  
+               <a href="{{ url_for('remove_favourite', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content"><i class="material-icons">close</i>Delete</a>
+               {% endif %}
+               {% endfor %}
+            </li>
+         </ul>
+      </div>
+   </div>
+</div>
 {% endfor %} 
-{% endblock %}  
+{% endblock %}

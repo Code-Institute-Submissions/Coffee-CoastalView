@@ -1,39 +1,35 @@
-<img src="https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png" style="margin: 0;">
+# H1 Coffee & Coastal Views 
+Coffee & Coastal Views is a web application that contains information about cafes along the Wild Atlantic Way in Ireland. It is a website that allows users to find cafes serving quality coffee in popular tourist locations. Site visitors can browse cafe reviews and ratings or they can make an account and leave their own reviews/rate the cafes. Users can also add cafes to their collection of "want to visit" for easy recall when they are in the area.
 
-Welcome Jadeosull93,
+Users will also have the ability to, once registered and logged in, edit and delete the reviews and rating they have left previously.
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. You can safely delete this README.md file, or change it for your own project.
+The aims of the site is to create awareness for cafes serving quality coffee along Ireland's coast. 
 
-## Gitpod Reminders
+Users will be able to perform CRUD (Create, Read, Update and Delete) functions across the site. 
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+Site visitors will also be allowed to fill out a form if they would like a new cafe added to the site. The site will then be added by admin. 
 
-`python3 -m http.server`
 
-A blue button should appear to click: *Make Public*,
 
-Another blue button should appear to click: *Open Browser*.
+UX
+The website was designed with ease of user at the fore-front of the design.
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+-	As a user I want to be able to Navigate to different pages of the website 
+-	As a user I want to be able to click on a coffee shops and be brought to their website or social media 
+-	As a user I want to rate Coffee shops on the website and add my personal review 
+-	As a user of the website I want to be able to search for a coffee shop by location 
+-	As a website user, I want information on how to use certain functions
+-	As a website user, I want satisfying images and colors in the game.
+-	As a registered website user, I want to be able to add a coffee shop to my “want to visit” list. 
 
-A blue button should appear to click: *Make Public*,
+Mock Ups
+I designed the mock ups for the site using Figma. Mock ups for the website can be found in the following folder
 
-Another blue button should appear to click: *Open Browser*.
 
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the backend lessons.
+HTML – the project uses html as the main language to build the website
+Materalize – Used as the main frontend framework.
+CSS – CSS is used to add individual style to the website
+Javascript - JS was used to initate certain features of Materalize.
+Font Awesome – this site was used to add icons to the site.
+MongoBD - Used as the main database technology.
 
-## Updates Since The Instructional Video
-
-We continually tweak and adjust this template to help give you the best experience. Here are the updates since the original video was made:
-
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
-
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
-
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
-
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
-
---------
-
-Happy coding!

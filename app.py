@@ -25,6 +25,28 @@ mongo = PyMongo(app)
 
 # loads cafe page with all cafes in Mongo
 
+@app.route('/')
+@app.route('/get_landing')
+def get_landing():
+    result = session.get('USERNAME', None)
+    if result:
+        username = session['USERNAME']
+
+        user = mongo.db.users.find_one({'name': username})
+        cafes = mongo.db.cafes.find()
+
+            # app.logger.info('User id is ' + str(user['_id']))
+
+        user_id = user['_id']
+        app.logger.info('cafes ' + str(cafes))
+        return render_template('landing.html', user_id=user_id)
+
+        # User not signed in
+
+    return render_template('landing.html')
+
+# loads cafe page with all cafes in Mongo
+
 @app.route('/get_cafes')
 def get_cafes():
     result = session.get('USERNAME', None)
@@ -97,29 +119,6 @@ def get_profile():
         # User not signed in
 
     return render_template('index.html')
-
-
-# loads cafe page with all cafes in Mongo
-
-@app.route('/')
-@app.route('/get_landing')
-def get_landing():
-    result = session.get('USERNAME', None)
-    if result:
-        username = session['USERNAME']
-
-        user = mongo.db.users.find_one({'name': username})
-        cafes = mongo.db.cafes.find()
-
-            # app.logger.info('User id is ' + str(user['_id']))
-
-        user_id = user['_id']
-        app.logger.info('cafes ' + str(cafes))
-        return render_template('landing.html', user_id=user_id)
-
-        # User not signed in
-
-    return render_template('landing.html')
 
 
 # loads login page and takes user to profile page if login details correct

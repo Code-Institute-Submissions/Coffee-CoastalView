@@ -39,7 +39,7 @@
                         <i class="material-icons blue-text text-darken-2 left cafe-rating">star</i>
                         {% endif %}
                     {% endfor %}
-                    <a class="waves-effect waves-light btn btn-flat recipe-social modal-trigger light-blue lighten-3" href="#RateModal">
+                    <a class="waves-effect waves-light btn btn-flat  modal-trigger light-blue lighten-3" href="#RateModal">
                     <i class="material-icons left">free_breakfast</i>Rate This Cafe!</a>
                 </div>
                
@@ -53,16 +53,16 @@
             <div class=" modal-content modal-rating">
                 <p>Tell us how much do you like this Cafe!</p>
                 <div class="rating">
-                    <input id="rating1" type="radio" name="rating" value="1">
-                    <label for="rating1"><i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i></label>
-                    <input id="rating2" type="radio" name="rating" value="2">
-                    <label for="rating2"><i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i></label>
-                    <input id="rating3" type="radio" name="rating" value="3">
-                    <label for="rating3"><i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i></label>
-                    <input id="rating4" type="radio" name="rating" value="4">
-                    <label for="rating4"><i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i></label>
-                    <input id="rating5" type="radio" name="rating" value="5" checked>
-                    <label for="rating5"><i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i></label>
+                    <input id="rating1" type="checkbox" name="rating" value="1">
+                    <label for="rating1"><i class="material-icons blue-text text-darken-2 left cafe-rating" onclick="myRating(this, 'red!important')">star_border</i></label>
+                    <input id="rating2" type="checkbox" name="rating" value="2">
+                    <label for="rating2"><i class="material-icons blue-text text-darken-2 left cafe-rating" onclick="myRating(this, 'red')">star_border</i></label>
+                    <input id="rating3" type="checkbox" name="rating" value="3">
+                    <label for="rating3"><i class="material-icons blue-text text-darken-2 left cafe-rating" onclick="myRating(this, 'red')">star_border</i></label>
+                    <input id="rating4" type="checkbox" name="rating" value="4">
+                    <label for="rating4"><i class="material-icons blue-text text-darken-2 left cafe-rating" onclick="myRating(this, 'red')">star_border</i></label>
+                    <input id="rating5" type="checkbox" name="rating" value="5" checked>
+                    <label for="rating5"><i class="material-icons blue-text text-darken-2 left cafe-rating" onclick="myRating(this, 'red')">star_border</i></label>
                 </div>
             </div>
             <div class="modal-footer">
@@ -83,18 +83,33 @@
         {% for review in cafe.reviews %}	
             
 		    <div class="col s12 m6 l4 xl3">
-				<div class="card medium">
+				<div class="card small">
 					<div class="card-content">
 						<h6 class="card-title">{{review.details}}</h6>
                         <h6 class="card-title">{{review.user_name}}</h6>
                         {% if review.user_name == session['USERNAME'] %}  
                         <p></p>
-                        <a href="{{ url_for('remove_review', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content"><i class="material-icons">close</i>Delete</a>
+                        <div class="card-action">
+                            <a class="waves-effect waves-light btn btn-flat modal-trigger light-blue lighten-3" href="#DeleteModal"><i class="material-icons">close</i>DELETE</a>
+                        </div>
+                        
                         {% endif %}
 					</div>
 				</div>
             </div>
-            
+            <!-- Rate modal -->
+    <div id="DeleteModal" class="modal">
+            <div class=" modal-content">
+                <p>Are you sure you want to delete your review?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close waves-effect waves-blue btn-flat blue-text light-blue lighten-3" type="submit"
+                        name="action">No!
+                </button>
+                <a href="{{ url_for('remove_review', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content"><i class="material-icons">close</i>Yes, Delete</a>
+            </div>
+    </div>
 		{% endfor %}
 		</div>            
     </div>
@@ -103,7 +118,7 @@
     <!--Add Review-->
 	<div class="row">
 		
-        <form method="POST" class="col s12 box" action="{{ url_for('add_review', cafe_id=cafe._id, user_id=user_id) }}">
+        <form method="POST" class="col s12 m12 l12 xl12 box" action="{{ url_for('add_review', cafe_id=cafe._id, user_id=user_id) }}">
             <div class="form-group">
                 <label for="review_user">Write Review Below</label>
                 <div class="input-field col s12 box">
@@ -113,4 +128,5 @@
 			<button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Add Review </button>
 		</form>
 	</div> 
+  
     {% endblock %}

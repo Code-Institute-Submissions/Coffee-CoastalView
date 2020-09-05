@@ -16,7 +16,7 @@
     </head>
 
  <body>
- {% block nav %}
+ {% block navbar %}
  <div class="navbar-fixed">
     <nav class="light-blue darken-3">
       <div class="container">
@@ -25,38 +25,73 @@
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
            <ul class="right hide-on-med-and-down">
                 <li>
+                    <form>
+                        <div class="input-field">
+                            <input id="search" type="search" required>
+                            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                    </form>
+                </li>
+                <li>
                     <a href="{{ url_for('get_landing') }}">Home</a>
                 </li>
                 <li>
                     <a href="{{ url_for('get_cafes') }}">Cafes</a>
                 </li>
-                <li>
-                    <a href="{{ url_for('get_profile') }}">My Profile</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('index') }}" method="GET">Login</a>
-                </li>
+                <!-- display username or login -->
+                 {% if session['USERNAME'] %}
+                <li id="user"><a href="{{ url_for('get_profile') }}"> {{ session['USERNAME']|upper }}<i class="small material-icons">account_circle</i></a></li>
+                {% else %}
+                 <li id="login"><a href="{{ url_for('index') }}"> LOGIN  <i class="small material-icons">account_circle</i></a></li>
+                {% endif %}
+                {% endblock %}
+               
           </ul>
         </div>
       </div>
     </nav>
   </div>
+  {% block sidenav %}
   <ul class="sidenav" id="mobile-demo">
+    <li>
+                    <form>
+                        <div class="input-field">
+                            <input id="search" type="search" required>
+                            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>
+                    </form>
+                </li>
     <li>
         <a href="home.html">Home</a>
     </li>
     <li>
         <a href="{{ url_for('get_cafes') }}">Cafes</a>
     </li>
-    <li>
-        <a href="{{ url_for('get_profile') }}">My Profile</a>
-    </li>
-    <li>
-        <a href="{{ url_for('index') }}" method="GET">Login</a>
-    </li>
+    <!-- display username or login -->
+                 {% if session['USERNAME'] %}
+                <li id="user"><a href="{{ url_for('get_profile') }}"> {{ session['USERNAME']|upper }}<i class="small material-icons">account_circle</i></a></li>
+                {% else %}
+                 <li id="login"><a href="{{ url_for('index') }}"> LOGIN  <i class="small material-icons">account_circle</i></a></li>
+                {% endif %}
+                {% endblock %}
   </ul>
-  {% endblock %}
-    <div id="content">{% block content %}{% endblock %}</div>
+  
+    <div id="content">{% block content %}
+   
+
+    {% endblock %}</div>
+
+     {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+           <div class="col 12">
+            <span>{{ message }}</span>
+           </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
       {% block footer %}
         <footer class="section light-blue darken-3 white-text center">
             <p class="flow-text">Coffee&Coastal &copy; 2020</p>

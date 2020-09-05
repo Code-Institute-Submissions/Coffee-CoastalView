@@ -75,6 +75,13 @@ nav .brand-logo{
 }
 
 /* colors and spacing */
+.rating label i:hover {
+    color: red!important;
+}
+
+.rating label i::checked + label {
+    color: red!important;
+}
 
 i:hover {
 	color: red;

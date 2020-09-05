@@ -1,7 +1,7 @@
 import os
 import bcrypt
 from flask import Flask, render_template, redirect, request, url_for, \
-    session, abort
+    session, abort, request, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
@@ -242,8 +242,9 @@ def add_favourite(cafe_id, user_id):
                         + str(cafe_id) + ' user_id= ' + str(user_id))
         cafes.update({'_id': ObjectId(cafe_id)},
                      {'$push': {'favourites': {'user_id': ObjectId(user_id),
-                     'user_name': username}}})
+                     'user_name': username}}})            
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
+        flash("Added to your favourites!")
     except:
 
         # raises a 404 error if any of these fail

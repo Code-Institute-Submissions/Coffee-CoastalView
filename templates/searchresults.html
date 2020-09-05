@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block content %}
+    {% for cafe in cafes %}
+    <div class="row">
+        <div class="col l3 m4 s12">
+            <div class="card cafe">
+                <div class="card-image">
+                    <img src="{{cafe.imagepath}}">
+                </div>
+                <div class="card-content">
+                    <h6 class="card-title">{{cafe.name}}</h6>
+                    <p>{{cafe.address}}</p>
+                    <a href="{{ url_for('get_individualcafe', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">See More</a>    
+            </div>
+        </div>
+    </div>
+    {% endfor %}        
+{% endblock %}

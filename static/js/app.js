@@ -14,4 +14,8 @@
 
 // Modal Init
     let modalElems = document.querySelectorAll('.modal');
-    M.Modal.init(modalElems);      
+    M.Modal.init(modalElems);    
+    
+ function myRating(elmnt,clr) {
+     elmnt.style.color = clr;
+        }

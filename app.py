@@ -25,7 +25,7 @@ mongo = PyMongo(app)
 
 # loads cafe page with all cafes in Mongo
 
-#@app.route('/')
+
 @app.route('/get_landing')
 def get_landing():
     result = session.get('USERNAME', None)
@@ -123,6 +123,7 @@ def get_profile():
 
 # loads login page and takes user to profile page if login details correct
 
+@app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
 

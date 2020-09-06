@@ -83,15 +83,7 @@
 
     {% endblock %}</div>
 
-     {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-           <div class="col 12">
-            <span>{{ message }}</span>
-           </div>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
+     
       {% block footer %}
         <footer class="section light-blue darken-3 white-text center">
             <p class="flow-text">Coffee&Coastal &copy; 2020</p>

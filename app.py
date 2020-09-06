@@ -1,7 +1,7 @@
 import os
 import bcrypt
 from flask import Flask, render_template, redirect, request, url_for, \
-    session, abort, request, flash
+    session, abort, request
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
@@ -74,8 +74,8 @@ def search_database(user_id):
             if result:
                 app.logger.info('Post called in search_database ')
                 search_terms =  request.form['search_terms']
-                cafes = mongo.db.cafes.find( { "$text": { "$search" : search_terms, "$caseSensitive" : "false" } } )
-                return render_template('searchresults.html', cafes,
+                cafes = mongo.db.cafes.find( { "$text": { "$search" : search_terms, "$caseSensitive" : False } } )
+                return render_template('searchresults.html', cafes=cafes,
                                 user_id=user_id)
 
     return abort(404, description='search_database:Resource not found')
@@ -268,7 +268,6 @@ def add_favourite(cafe_id, user_id):
                      {'$push': {'favourites': {'user_id': ObjectId(user_id),
                      'user_name': username}}})
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
-        flash("Added to your favourites!")
     except:
 
         # raises a 404 error if any of these fail

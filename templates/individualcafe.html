@@ -117,7 +117,7 @@
     
     <!--Add Review-->
 	<div class="row">
-		
+		{% if existing_review.count()  == 0 %}
         <form method="POST" class="col s12 m12 l12 xl12 box" action="{{ url_for('add_review', cafe_id=cafe._id, user_id=user_id) }}">
             <div class="form-group">
                 <label for="review_user">Write Review Below</label>
@@ -126,7 +126,18 @@
                 </div>
             </div>
 			<button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Add Review </button>
-		</form>
+        </form>
+        {% else %}
+        <form method="POST" class="col s12 m12 l12 xl12 box" action="{{ url_for('update_review', cafe_id=cafe._id, user_id=user_id) }}">
+            <div class="form-group">
+                <label for="review_user">Update Your Review Below</label>
+                <div class="input-field col s12 box">
+                    <textarea id="textarea1" name="details" class="materialize-textarea" required="required">"review_details"</textarea>
+                </div>
+            </div>
+			<button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Update Review </button>
+        </form>
+        {% endif %}
 	</div> 
   
     {% endblock %}

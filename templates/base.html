@@ -25,9 +25,9 @@
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
            <ul class="right hide-on-med-and-down">
                 <li>
-                    <form>
+                    <form method="POST" action="{{ url_for('search_database', user_id=user_id) }}">
                         <div class="input-field">
-                            <input id="search" type="search" required>
+                            <input id="search" type="search" name="search_terms" required="required">
                             <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                             <i class="material-icons">close</i>
                         </div>

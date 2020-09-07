@@ -17,8 +17,13 @@
     <!--Add to Favourties Section-->
     <div class="section">
         <div class="row">
+
             <div class="col s12 center-align">
-                <a href="{{ url_for('add_favourite', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">Add to Favourites</a>
+                {% if users_favourites.count() == 0 %}
+                    <a href="{{ url_for('add_favourite', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">Add to Favourites</a>
+                {% else %}   
+                    <a href="{{ url_for('remove_favourite', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">Remove from Favourites</a> 
+                {% endif %}
             </div>
         </div>
     </div>    

@@ -35,43 +35,21 @@
       <div class="row">
         <h4 class="center">
           <span class="light-blue darken-3-text">Some of Our Cafes</span></h4>
-        <div class="col s12 m4">
-          <div class="card">
-            <div class="card-image">
-              <img src="static/images/1.jpg" alt="">
-              <span class="card-title">Moher Cottage</span>
+          {% for cafe in top_three %}
+            <div class="col s12 m4">
+              <div class="card">
+                <div class="card-image">
+                  <img src="{{cafe.imagepath}}">
+                  <span class="card-title">{{cafe.name}}</span>
+                </div>
+                <div class="card-content">
+                  <p>{{cafe.address}}<br>{{cafe.location}}
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="card-content">
-              <p>A gorgeous cafe and gift shop near the famous Cliffs of Moher.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col s12 m4">
-          <div class="card">
-            <div class="card-image">
-              <img src="static/images/4.jpg" alt="">
-              <span class="card-title">This Must Be The Place</span>
-            </div>
-            <div class="card-content">
-              <p>This top quality cafe serves excellent coffee and tasty baked goods. 
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col s12 m4">
-          <div class="card">
-            <div class="card-image">
-              <img src="static/images/7.jpg" alt="">
-              <span class="card-title">Foam</span>
-            </div>
-            <div class="card-content">
-              <p>This cafe is famous for it's coffee in Donegal! Surrounded by stunning views.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+        {% endfor %}
+     
       <div class="row">
         <div class="col s12 center">
           <a href="#contact" class="btn btn-large light-blue darken-3">

@@ -39,11 +39,12 @@ def get_landing():
 
         user_id = user['_id']
         app.logger.info('cafes ' + str(cafes))
-        return render_template('landing.html', user_id=user_id)
+        top_three= mongo.db.cafes.aggregate([{"$sort" :{"ratings_avg" :-1}},{ "$limit" : 3}])
+        return render_template('landing.html', user_id=user_id,top_three=top_three)
 
         # User not signed in
 
-    return render_template('landing.html')
+    return render_template('landing.html', user_id=user_id,top_three=top_three)
 
 # loads cafe page with all cafes in Mongo
 
@@ -94,6 +95,7 @@ def get_individualcafe(cafe_id, user_id):
         cafe = mongo.db.cafes.find_one({'_id': ObjectId(cafe_id)})
         users_reviews = mongo.db.cafes.find({'_id': ObjectId(cafe_id),
                 'reviews.user_id': ObjectId(user_id)})
+        users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) })        
         count = users_reviews.count()
         app.logger.info(' reviews.user_id : ' + str(user_id)
                         + 'cafe_id : ' + str(cafe_id))
@@ -102,7 +104,7 @@ def get_individualcafe(cafe_id, user_id):
 
         return render_template('individualcafe.html', cafe=cafe,
                                user_id=user_id,
-                               user_reviews=users_reviews,existing_review = existing_review)
+                               user_reviews=users_reviews,existing_review = existing_review,users_favourites=users_favourites)
 
                                 # user_id=mongo.db.users.find_one({'username' : username}),
                                 # users_review=mongo.db.cafes.reviews.find_one({'_1': ObjectId(user_id)})
@@ -130,7 +132,7 @@ def get_profile():
 
         app.logger.info('Cafes = ' + str(cafes.count()) + ' User id is '
                          + str(user['_id']) + ' favourites are '
-                        + str(cafes))
+                        + str(cafes) + " reviews are " + str(my_reviews.count()))
         return render_template('myprofile.html', cafes=cafes,
                                user_name=username, user_id=user['_id'],my_reviews=my_reviews)
 
@@ -172,12 +174,12 @@ def login():
     users = mongo.db.users
     login_user = users.find_one({'name': request.form['username']})
     form_password = request.form['pass'].encode('utf-8')
-    login_user_password = login_user['password']
-    decrypted_password = bcrypt.hashpw(form_password,
-            login_user_password)
+
     if login_user:
 
-        # ERROR: you never defined bcrypt
+        login_user_password = login_user['password']
+        decrypted_password = bcrypt.hashpw(form_password,
+        login_user_password)
 
         if decrypted_password == login_user_password:
 
@@ -185,10 +187,11 @@ def login():
 
             session['USERNAME'] = request.form['username']
             cafes = mongo.db.cafes.find()
+            top_three= mongo.db.cafes.aggregate([{"$sort" :{"ratings_avg" :-1}},{ "$limit" : 3}])
     else:
 
         return 'Invalid username/password combination'
-    return render_template('landing.html')
+    return render_template('landing.html', user_id=login_user['_id'],top_three=top_three)
 
 
 @app.route('/edit_user')
@@ -209,13 +212,15 @@ def update_user():
     user_id = request.form['user_id']
     user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
     password = request.form['user_password']
-    hashpass = bcrypt.hashpw(request.form['user_password'
-                             ].encode('utf-8'), bcrypt.gensalt())
+    hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'
+                    ), bcrypt.gensalt())
 
     # app.logger.info('password encrypted is  ' + str(encryptted))
 
     mongo.db.users.update_one({'_id': user['_id']},
                               {'$set': {'name': username}}, upsert=True)
+    #mongo.db.users.update_one({'_id': user['_id']},
+    #                         {'$set': {'password': hashpass}}, upsert=True)
     cafes = \
         mongo.db.cafes.find({'favourites.user_id': ObjectId(user_id)})
     my_reviews= \
@@ -267,6 +272,7 @@ def add_favourite(cafe_id, user_id):
         cafes.update({'_id': ObjectId(cafe_id)},
                      {'$push': {'favourites': {'user_id': ObjectId(user_id),
                      'user_name': username}}})
+        users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) })        
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
     except:
 
@@ -274,7 +280,7 @@ def add_favourite(cafe_id, user_id):
 
         return abort(404, description='Resource not found')
     return render_template('individualcafe.html', cafe=cafe,
-                           user_id=user_id,existing_review = existing_review)
+                           user_id=user_id,existing_review = existing_review,users_favourites=users_favourites)
 
 
 # db.users.update({"name" : "JadeO"}, { $addToSet: { favourites: ObjectId("5f4bca9026e1755ced5287ba") }} )
@@ -284,7 +290,8 @@ def add_favourite(cafe_id, user_id):
 @app.route('/request_cafe', methods=['POST'])
 def request_cafe():
     mongo.db.requested_cafes.insert_one(request.form.to_dict())
-    return render_template('landing.html')
+    top_three= mongo.db.cafes.aggregate([{"$sort" :{"ratings_avg" :-1}},{ "$limit" : 3}])
+    return render_template('landing.html', user_id=user_id,top_three=top_three)
 
 
 @app.route('/remove_favourite/<cafe_id>/<user_id>')
@@ -308,14 +315,14 @@ def remove_favourite(cafe_id, user_id):
         cafes = \
             mongo.db.cafes.find({'favourites.user_id': ObjectId(user_id)})
         my_reviews= \
-            mongo.db.cafes.find( { "reviews.user_id" : ObjectId(user['_id']) } )
+            mongo.db.cafes.find( { "reviews.user_id" : ObjectId(user_id) } )
     except:
 
         # raises a 404 error if any of these fail
 
         return abort(404, description='Resource not found')
     return render_template('myprofile.html', cafes=cafes,
-                           user_name=username, user_id=user_id,my_review=my_reviews)
+                           user_name=username, user_id=user_id,my_reviews=my_reviews)
 
 
 @app.route('/rate_cafe/<cafe_id>/<user_id>', methods=['POST'])
@@ -350,13 +357,14 @@ def rate_cafe(cafe_id, user_id):
                          'ratings_sum': calculated_sum,
                          'ratings_avg': calculated_avg}}, upsert=True)
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
+        users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) })        
     except:
 
         # raises a 404 error if any of these fail
 
         return abort(404, description='Resource not found')
     return render_template('individualcafe.html', cafe=cafe,
-                           user_id=user_id,existing_review = existing_review)
+                           user_id=user_id,existing_review = existing_review,users_favourites=users_favourites)
 
 
 # logs user out
@@ -385,8 +393,9 @@ def add_review(cafe_id, user_id):
                  {'$push': {'reviews': {'user_id': ObjectId(user_id),
                  'user_name': username, 'details': details}}})
     cafe = cafes.find_one({'_id': ObjectId(cafe_id)})  # refresh the list
+    users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) })        
     return render_template('individualcafe.html', cafe=cafe,
-                           user_id=user_id,existing_review = existing_review)
+                           user_id=user_id,existing_review = existing_review,users_favourites=users_favourites)
 
 # leaves user update review
 
@@ -404,8 +413,9 @@ def update_review(cafe_id, user_id):
                     "reviews.user_id" : ObjectId(user_id)},
                     { "$set" : { "reviews.$.details" : details } } )                
     cafe = cafes.find_one({'_id': ObjectId(cafe_id)})  # refresh the list
+    users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) }) 
     return render_template('individualcafe.html', cafe=cafe,
-                           user_id=user_id,existing_review = existing_review)
+                           user_id=user_id,existing_review = existing_review,users_favourites=users_favourites)
 
 
 @app.route('/remove_review/<cafe_id>/<user_id>')
@@ -428,13 +438,14 @@ def remove_review(cafe_id, user_id):
                         + str(username) + ' cafe_id= ' + str(cafe_id)
                         + ' user_id= ' + str(user_id))
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})  # refresh the list
+        users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) })
     except:
 
         # raises a 404 error if any of these fail
 
         return abort(404, description='Resource not found')
     return render_template('individualcafe.html', cafe=cafe,
-                           user_id=user_id,existing_review = existing_review)
+                           user_id=user_id,existing_review = existing_review,users_favourites=users_favourites)
 
 app.debug = True
 

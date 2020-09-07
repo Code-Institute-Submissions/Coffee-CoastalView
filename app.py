@@ -15,7 +15,7 @@ app.config['MONGO_URI'] = os.getenv('MONGO_URI',
                                     )
 
 app.config["SECRET_KEY"] = os.environ.get('SESSION_SECRET')
-# app.secret_key = 'super secret key'
+app.secret_key = 'super secret key'
 # app.config['SESSION_TYPE'] = 'filesystem'
 # logging.basicConfig(level=logging.DEBUG)
 # toolbar = DebugToolbarExtension(app)

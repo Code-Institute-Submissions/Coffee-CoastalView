@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-<h3>Update UserName</h3>
+<h3>Update Profile Details</h3>
 <div class="container">
 <div class="row">
     <div class="col s12">
@@ -13,10 +13,15 @@
                     <input type="text" name="user_name" placeholder="Enter New Username" id="user_name" required="required"/>
                     <label for="UserName">Username : {{user.name}}</label>
                 </div>  
+                <div class="input-field">
+                    <input type="password" name="user_password" placeholder="Enter New Username" id="user_name" required="required"/>
+                    <label for="Password">Password : </label>
+                </div>
             </div>
         </div>
+    
         <div class="row">
-            <button class="btn waves-effect waves-light light-blue lighten-3" type="submit" name="action">Update Username</button>
+            <button class="btn waves-effect waves-light light-blue lighten-3" type="submit" name="action">Update Details</button>
         </div>
     </form>
 </div>

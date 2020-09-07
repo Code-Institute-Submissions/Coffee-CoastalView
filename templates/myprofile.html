@@ -28,7 +28,7 @@
 {% for cafe in cafes %}
 <div class="container">
    <div class="row">
-      <div class="col s6 offset-m3">
+      <div class="col s12 m6 offset-m3 offset-s0">
          <ul class="collection offset-m3" >
             <li class="collection-item avatar">
             <img src="../../{{cafe.imagepath}}" alt="" class="circle">
@@ -40,7 +40,7 @@
                   {% if favourite.user_name == session['USERNAME'] %}  
                   <br>
                   
-                  <a href="{{ url_for('remove_favourite', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content">Remove</a>
+                  <a href="=RemoveModal" class="waves-effect waves-light btn btn-flat modal-trigger light-blue darken-4">Remove</a>
                   
                   {% endif %}
                {% endfor %}
@@ -60,7 +60,7 @@
 {% for cafe in my_reviews %}
 <div class="container">
    <div class="row">
-      <div class="col s6 offset-m3">
+      <div class="col s12 m6 offset-m3 offset-0">
          <ul class="collection offset-m3" >
             <li class="collection-item avatar">
             <img src="../../{{cafe.imagepath}}" alt="" class="circle">
@@ -72,7 +72,7 @@
                {% for review in cafe.reviews %}
                   {% if review.user_name == session['USERNAME'] %} 
                   "{{review.details}}" <br><br>
-                  <a class="waves-effect waves-light btn btn-flat modal-trigger red accent-3" href="#DeleteModal">DELETE</a>
+                  <a class="waves-effect waves-light btn btn-flat modal-trigger light-blue darken-4" href="#DeleteModal">DELETE</a>
                   {% endif %}
                {% endfor %}
                </p>
@@ -93,6 +93,18 @@
                 <a class="waves-effect waves-light btn btn-flat modal-trigger red accent-3" href="{{ url_for('remove_review', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content">Yes, Delete</a>
             </div>
     </div>
+<div id="RemoveModal" class="modal">
+            <div class=" modal-content">
+                <p>Are you sure you want to remove this cafe from your list?</p>
+                
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close waves-effect waves-blue btn-flat blue-text light-blue lighten-3" type="submit"
+                        name="action">No!
+                </button>
+                <a class="waves-effect waves-light btn btn-flat modal-trigger red accent-3" href="{{ url_for('remove_favourite', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content">Yes, Remove</a>
+            </div>
+    </div>    
 {% endfor %}
 {% endif %}
 {% endblock %}

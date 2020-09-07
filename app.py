@@ -14,8 +14,8 @@ app.config['MONGO_URI'] = os.getenv('MONGO_URI',
                                     'mongodb+srv://JOS:Malteasers1!@cluster0.qn0az.mongodb.net/coffee_coastalview?retryWrites=true&w=majority'
                                     )
 
-# app.config["SECRET_KEY"] = os.environ.get('SESSION_SECRET')
-# app.secret_key = 'super secret key'
+app.config["SECRET_KEY"] = os.environ.get('SESSION_SECRET')
+app.secret_key = 'super secret key'
 # app.config['SESSION_TYPE'] = 'filesystem'
 # logging.basicConfig(level=logging.DEBUG)
 # toolbar = DebugToolbarExtension(app)
@@ -46,23 +46,28 @@ def get_cafes():
         username = session['USERNAME']
 
         user = mongo.db.users.find_one({'name': username})
-        cafes = mongo.db.cafes.find()
-        app.logger.info('User id is ' + str(user['_id']))
-        user_id = user['_id']
-        app.logger.info('cafes ' + str(cafes))
-        return render_template('cafes.html', cafes=cafes,
-                               user_id=user_id)
-    else:
+        if user:
+            cafes = mongo.db.cafes.find()
+            app.logger.info('User id is ' + str(user['_id']))
+            user_id = user['_id']
+            app.logger.info('cafes ' + str(cafes))
+            return render_template('cafes.html', cafes=cafes,
+                                user_id=user_id)
+    else: #make them log in
 
         return render_template('index.html')
 
 
-@app.route('/search_database/<user_id>', methods=['GET', 'POST'])
-def search_database(user_id):
+@app.route('/search_database', methods=['GET', 'POST'])
+def search_database():
     if request.method == 'POST':
             result = session.get('USERNAME', None)
             if result:
+                username = session['USERNAME']
+                user = mongo.db.users.find_one({'name': username})
+            if user:
                 app.logger.info('Post called in search_database ')
+                user_id = user['_id']
                 search_terms =  request.form['search_terms']
                 cafes = mongo.db.cafes.find( { "$text": { "$search" : search_terms, "$caseSensitive" : False } } )
                 return render_template('searchresults.html', cafes=cafes,
@@ -212,7 +217,7 @@ def update_user():
     user_id = request.form['user_id']
     user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
     password = request.form['user_password']
-    hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'
+    hashpass = bcrypt.hashpw(request.form['user_password'].encode('utf-8'
                     ), bcrypt.gensalt())
 
     # app.logger.info('password encrypted is  ' + str(encryptted))

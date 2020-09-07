@@ -40,7 +40,7 @@
                   {% if favourite.user_name == session['USERNAME'] %}  
                   <br>
                   
-                  <a href="=RemoveModal" class="waves-effect waves-light btn btn-flat modal-trigger light-blue darken-4">Remove</a>
+                  <a href="=RemoveModal" class="waves-effect waves-light btn btn-flat modal-trigger white-text light-blue darken-4">Remove</a>
                   
                   {% endif %}
                {% endfor %}
@@ -72,7 +72,7 @@
                {% for review in cafe.reviews %}
                   {% if review.user_name == session['USERNAME'] %} 
                   "{{review.details}}" <br><br>
-                  <a class="waves-effect waves-light btn btn-flat modal-trigger light-blue darken-4" href="#DeleteModal">DELETE</a>
+                  <a class="waves-effect waves-light btn btn-flat modal-trigger white-text light-blue darken-4" href="#DeleteModal">DELETE</a>
                   {% endif %}
                {% endfor %}
                </p>

@@ -29,22 +29,13 @@ mongo = PyMongo(app)
 @app.route('/get_landing')
 def get_landing():
     result = session.get('USERNAME', None)
-    if result:
-        username = session['USERNAME']
+    cafes = mongo.db.cafes.find()
+    # app.logger.info('User id is ' + str(user['_id']))
+    app.logger.info('cafes ' + str(cafes))
+    top_three= mongo.db.cafes.aggregate([{"$sort" :{"ratings_avg" :-1}},{ "$limit" : 3}])
+    return render_template('landing.html',top_three=top_three)
 
-        user = mongo.db.users.find_one({'name': username})
-        cafes = mongo.db.cafes.find()
 
-            # app.logger.info('User id is ' + str(user['_id']))
-
-        user_id = user['_id']
-        app.logger.info('cafes ' + str(cafes))
-        top_three= mongo.db.cafes.aggregate([{"$sort" :{"ratings_avg" :-1}},{ "$limit" : 3}])
-        return render_template('landing.html', user_id=user_id,top_three=top_three)
-
-        # User not signed in
-
-    return render_template('landing.html', user_id=user_id,top_three=top_three)
 
 # loads cafe page with all cafes in Mongo
 
@@ -61,11 +52,9 @@ def get_cafes():
         app.logger.info('cafes ' + str(cafes))
         return render_template('cafes.html', cafes=cafes,
                                user_id=user_id)
+    else:
 
-        # User not signed in
-        return render_template('index.html') 
-
-    return render_template('index.html')
+        return render_template('index.html')
 
 
 @app.route('/search_database/<user_id>', methods=['GET', 'POST'])
@@ -90,7 +79,18 @@ def get_individualcafe(cafe_id, user_id):
         username = session['USERNAME']
         cafes = mongo.db.cafes.find()
         count = cafes.count()
-        existing_review = mongo.db.cafes.find( { "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) } )
+        #existing_review = mongo.db.cafes.find( { "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) } )
+        existing_review = mongo.db.cafes.find_one(    { 
+        "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) },
+        { "reviews.details" : 1, "_id" : 0    })
+
+        #for item in existing_review:
+        #    app.logger.info('Item ' + str(item) )
+        #    app.logger.info('Item ' + str(item) + ' er ' + str(item['reviews']))
+        #    app.logger.info('Item ' + str(item) + ' er ' + str(item['reviews'][0]['details']))
+        # app.logger.info('Item ' + str(existing_review) ) #+ ' er ' + str(existing_review['reviews'][0]['details']))
+
+        #existing_review = list(existing_reviews)
 
         cafe = mongo.db.cafes.find_one({'_id': ObjectId(cafe_id)})
         users_reviews = mongo.db.cafes.find({'_id': ObjectId(cafe_id),
@@ -191,7 +191,7 @@ def login():
     else:
 
         return 'Invalid username/password combination'
-    return render_template('landing.html', user_id=login_user['_id'],top_three=top_three)
+    return render_template('landing.html',top_three=top_three)
 
 
 @app.route('/edit_user')
@@ -219,8 +219,8 @@ def update_user():
 
     mongo.db.users.update_one({'_id': user['_id']},
                               {'$set': {'name': username}}, upsert=True)
-    #mongo.db.users.update_one({'_id': user['_id']},
-    #                         {'$set': {'password': hashpass}}, upsert=True)
+    mongo.db.users.update_one({'_id': user['_id']},
+                              {'$set': {'password': hashpass}}, upsert=True)
     cafes = \
         mongo.db.cafes.find({'favourites.user_id': ObjectId(user_id)})
     my_reviews= \
@@ -266,7 +266,9 @@ def add_favourite(cafe_id, user_id):
         username = session['USERNAME']
         cafes = mongo.db.cafes
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
-        existing_review = mongo.db.cafes.find( { "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) } )
+        existing_review = mongo.db.cafes.find_one(    { 
+        "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) },
+        { "reviews.details" : 1, "_id" : 0    })
         app.logger.info('username = ' + str(username) + ' cafe_id= '
                         + str(cafe_id) + ' user_id= ' + str(user_id))
         cafes.update({'_id': ObjectId(cafe_id)},
@@ -274,6 +276,7 @@ def add_favourite(cafe_id, user_id):
                      'user_name': username}}})
         users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) })        
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
+        #flash("Added to your favourites!")
     except:
 
         # raises a 404 error if any of these fail
@@ -291,7 +294,7 @@ def add_favourite(cafe_id, user_id):
 def request_cafe():
     mongo.db.requested_cafes.insert_one(request.form.to_dict())
     top_three= mongo.db.cafes.aggregate([{"$sort" :{"ratings_avg" :-1}},{ "$limit" : 3}])
-    return render_template('landing.html', user_id=user_id,top_three=top_three)
+    return render_template('landing.html',top_three=top_three)
 
 
 @app.route('/remove_favourite/<cafe_id>/<user_id>')
@@ -344,7 +347,9 @@ def rate_cafe(cafe_id, user_id):
         calculated_rating_total = int(current_cafe['ratings_total']) + 1
         calculated_sum = int(current_cafe['ratings_sum']) \
             + int(new_rating)
-        existing_review = mongo.db.cafes.find( { "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) } )
+        existing_review = mongo.db.cafes.find_one(    { 
+        "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) },
+        { "reviews.details" : 1, "_id" : 0    })
 
         # rounded average for simplicity
 
@@ -385,7 +390,9 @@ def add_review(cafe_id, user_id):
     cafes = mongo.db.cafes
     details = request.form.get('details')
     cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
-    existing_review = mongo.db.cafes.find( { "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) } )
+    existing_review = mongo.db.cafes.find_one(    { 
+        "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) },
+        { "reviews.details" : 1, "_id" : 0    })
     app.logger.info('Details = ' + str(details) + ' username = '
                     + str(username) + ' cafe_id= ' + str(cafe_id)
                     + ' user_id= ' + str(user_id))
@@ -405,13 +412,16 @@ def update_review(cafe_id, user_id):
     cafes = mongo.db.cafes
     details = request.form.get('details')
     cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
-    existing_review = mongo.db.cafes.find( { "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) } )
+    
     app.logger.info('Details = ' + str(details) + ' username = '
                     + str(username) + ' cafe_id= ' + str(cafe_id)
                     + ' user_id= ' + str(user_id))
     cafes.update( {"_id" : ObjectId(cafe_id),
                     "reviews.user_id" : ObjectId(user_id)},
-                    { "$set" : { "reviews.$.details" : details } } )                
+                    { "$set" : { "reviews.$.details" : details } } )  
+    existing_review = mongo.db.cafes.find_one(    { 
+        "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) },
+        { "reviews.details" : 1, "_id" : 0    })              
     cafe = cafes.find_one({'_id': ObjectId(cafe_id)})  # refresh the list
     users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) }) 
     return render_template('individualcafe.html', cafe=cafe,
@@ -431,7 +441,9 @@ def remove_review(cafe_id, user_id):
         username = session['USERNAME']
         cafes = mongo.db.cafes
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
-        existing_review = mongo.db.cafes.find( { "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) } )
+        existing_review = mongo.db.cafes.find_one(    { 
+        "_id" : ObjectId(cafe_id),"reviews.user_id" : ObjectId(user_id) },
+        { "reviews.details" : 1, "_id" : 0    })
         result = cafes.update({'_id': ObjectId(cafe_id)},
                               {'$pull': {'reviews': {'user_id': ObjectId(user_id)}}})
         app.logger.info('Result = ' + str(result) + ' username = '

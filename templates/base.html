@@ -34,10 +34,14 @@
                     </form>
                 </li>
                 <li>
+                  
                     <a href="{{ url_for('get_landing') }}">Home</a>
+
                 </li>
                 <li>
+
                     <a href="{{ url_for('get_cafes') }}">Cafes</a>
+ 
                 </li>
                 <!-- display username or login -->
                  {% if session['USERNAME'] %}
@@ -83,7 +87,7 @@
 
     {% endblock %}</div>
 
-     
+
       {% block footer %}
         <footer class="section light-blue darken-3 white-text center">
             <p class="flow-text">Coffee&Coastal &copy; 2020</p>

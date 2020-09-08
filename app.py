@@ -411,6 +411,7 @@ def get_exisiting_review(cafe_id, user_id):
             app.logger.info('Item ' + str(details) )
             if details['user_name'] == username:
                 existing_review =  details['details'] 
+                break
             else:
                 existing_review = ""       
     return existing_review               

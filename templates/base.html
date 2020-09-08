@@ -1,7 +1,7 @@
+{% block head %}
 <!DOCTYPE html>
   <html>
     <head>
-     {% block head %}
       <!--Import Google Icon Font-->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import CSS from file -->
@@ -19,7 +19,6 @@
  {% block navbar %}
  
  <div class="navbar-fixed">
- <div class="container">
     <nav class="light-blue darken-3">
       <div class="container">
         <div class="nav-wrapper">
@@ -27,14 +26,11 @@
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
            <ul class="right hide-on-med-and-down">
                 <li>
-                    <form method="POST" action="{{ url_for('search_database') }}">
-                        <div class="input-field">
-                            <input id="search" type="search" name="search_terms" required="required">
-                            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                            <i class="material-icons">close</i>
-                        </div>
-                    </form>
+                  
+                    <a href="{{ url_for('get_searchpage') }}"><i class="material-icons">search</i></a>
+
                 </li>
+                
                 <li>
                   
                     <a href="{{ url_for('get_landing') }}">Home</a>
@@ -63,7 +59,6 @@
       </div>
     </nav>
   </div>
- </div>
   {% block sidenav %}
   <ul class="sidenav" id="mobile-demo">
     <li>
@@ -82,10 +77,10 @@
     </li>
     <!-- display username or login -->
                  {% if session['USERNAME'] %}
-                <li id="user"><a href="{{ url_for('get_profile') }}"> {{ session['USERNAME']|upper }}</a></li>
+                <li><a href="{{ url_for('get_profile') }}"> {{ session['USERNAME']|upper }}</a></li>
                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
-                 <li id="login"><a href="{{ url_for('index') }}"> LOGIN </a></li>
+                 <li><a href="{{ url_for('index') }}"> LOGIN </a></li>
                 {% endif %}
                 {% endblock %}
   </ul>

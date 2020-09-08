@@ -1,7 +1,12 @@
 {% extends 'base.html' %} {% block content %}
-    
-    <div class="row">   
-    <p>You must login to view this page</p><br>                        
+<div class="container">
+    <div class="row">
+        <div class="col s12 m6 offset-m3 center">
+            <p>You must Login or Register to view this page</p>
+            <a href="{{ url_for('index')}}" class="waves-effect waves-light btn light-blue lighten-3">Login</a> 
+            <a href="{{ url_for('register')}}" class="waves-effect waves-light btn light-blue lighten-3">Register</a>
+        </div>
     </div>
-            
-{% endblock %}
+</div>
+{% endblock %}   
+  

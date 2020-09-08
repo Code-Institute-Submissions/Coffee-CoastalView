@@ -57,6 +57,9 @@ def get_cafes():
 
         return render_template('adviselogin.html')
 
+@app.route('/get_searchpage')
+def get_searchpage():
+    return render_template('search.html')
 
 @app.route('/search_database', methods=['GET', 'POST'])
 def search_database():
@@ -295,7 +298,7 @@ def request_cafe():
             mongo.db.requested_cafes.insert_one(request.form.to_dict())
             return render_template('caferequestacknowledged.html')
     except:
-        return render_template('adviselogin.html')
+        return render_template('caferequestacknowledged.html')
 
 
 @app.route('/remove_favourite/<cafe_id>/<user_id>')

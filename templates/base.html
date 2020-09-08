@@ -21,7 +21,7 @@
     <nav class="light-blue darken-3">
       <div class="container">
         <div class="nav-wrapper">
-          <a href="#!" class="brand-logo">Coffee & Coastal Views</a>
+          <a href="{{ url_for('get_landing')}}" class="brand-logo">Coffee & Coastal Views</a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
            <ul class="right hide-on-med-and-down">
                 <li>
@@ -59,16 +59,15 @@
   {% block sidenav %}
   <ul class="sidenav" id="mobile-demo">
     <li>
-                    <form>
+        <form method="POST" action="{{ url_for('search_database') }}">
                         <div class="input-field">
-                            <input id="search" type="search" required>
+                            <input id="search" type="search" name="search_terms" required="required">
                             <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                             <i class="material-icons">close</i>
                         </div>
-                    </form>
-                </li>
+        </form>
     <li>
-        <a href="home.html">Home</a>
+        <a href="{{ url_for('get_landing')}}">Home</a>
     </li>
     <li>
         <a href="{{ url_for('get_cafes') }}">Cafes</a>

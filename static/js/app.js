@@ -16,6 +16,8 @@
     let modalElems = document.querySelectorAll('.modal');
     M.Modal.init(modalElems);    
     
- function myRating(elmnt,clr) {
-     elmnt.style.color = clr;
-        }
+//rating 
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems,{});
+  });

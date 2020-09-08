@@ -17,7 +17,9 @@
 
  <body>
  {% block navbar %}
+ 
  <div class="navbar-fixed">
+ <div class="container">
     <nav class="light-blue darken-3">
       <div class="container">
         <div class="nav-wrapper">
@@ -45,9 +47,14 @@
                 </li>
                 <!-- display username or login -->
                  {% if session['USERNAME'] %}
-                <li id="user"><a href="{{ url_for('get_profile') }}"> {{ session['USERNAME']|upper }}<i class="small material-icons">account_circle</i></a></li>
+                <li id="user"><a href="{{ url_for('get_profile') }}"> {{ session['USERNAME']|upper }}</a></li>
+                <li>
+
+                    <a href="{{ url_for('logout') }}">Logout</a>
+ 
+                </li>
                 {% else %}
-                 <li id="login"><a href="{{ url_for('index') }}"> LOGIN  <i class="small material-icons">account_circle</i></a></li>
+                 <li id="login"><a href="{{ url_for('index') }}"> LOGIN </a></li>
                 {% endif %}
                 {% endblock %}
                
@@ -56,6 +63,7 @@
       </div>
     </nav>
   </div>
+ </div>
   {% block sidenav %}
   <ul class="sidenav" id="mobile-demo">
     <li>
@@ -74,9 +82,10 @@
     </li>
     <!-- display username or login -->
                  {% if session['USERNAME'] %}
-                <li id="user"><a href="{{ url_for('get_profile') }}"> {{ session['USERNAME']|upper }}<i class="small material-icons">account_circle</i></a></li>
+                <li id="user"><a href="{{ url_for('get_profile') }}"> {{ session['USERNAME']|upper }}</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
-                 <li id="login"><a href="{{ url_for('index') }}"> LOGIN  <i class="small material-icons">account_circle</i></a></li>
+                 <li id="login"><a href="{{ url_for('index') }}"> LOGIN </a></li>
                 {% endif %}
                 {% endblock %}
   </ul>

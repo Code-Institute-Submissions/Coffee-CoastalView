@@ -122,7 +122,7 @@
     
     <!--Add Review-->
 	<div class="row">
-		{% if existing_review is none %}
+		{% if existing_review == "" %}
         <form method="POST" class="col s12 m12 l12 xl12 box" action="{{ url_for('add_review', cafe_id=cafe._id, user_id=user_id) }}">
             <div class="form-group">
                 <label for="review_user">Write Review Below</label>
@@ -137,7 +137,7 @@
             <div class="form-group">
                 <label for="review_user">Update Your Review Below</label>
                 <div class="input-field col s12 box">                   
-                        <textarea id="textarea1" name="details" class="materialize-textarea" required="required">{{ existing_review['reviews'][0]['details'] }}</textarea>          
+                        <textarea id="textarea1" name="details" class="materialize-textarea" required="required">{{ existing_review  }}</textarea>          
                 </div>
 
             </div>

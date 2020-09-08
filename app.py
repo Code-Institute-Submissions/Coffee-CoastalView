@@ -55,7 +55,7 @@ def get_cafes():
                                 user_id=user_id)
     else: #make them log in
 
-        return render_template('index.html')
+        return render_template('adviselogin.html')
 
 
 @app.route('/search_database', methods=['GET', 'POST'])
@@ -115,7 +115,7 @@ def get_individualcafe(cafe_id, user_id):
                                 # users_review=mongo.db.cafes.reviews.find_one({'_1': ObjectId(user_id)})
         # User not signed in
 
-    return render_template('index.html')
+    return render_template('adviselogin.html')
 
 
 # loads user profile page if user logged in, if user not logged in loads log in page
@@ -143,7 +143,7 @@ def get_profile():
 
         # User not signed in
 
-    return render_template('index.html')
+    return render_template('adviselogin.html')
 
 
 # loads login page and takes user to profile page if login details correct
@@ -249,7 +249,7 @@ def register():
             users.insert({'name': request.form['username'],
                          'password': hashpass})
             session['USERNAME'] = request.form['username']
-            return render_template('cafes.html')
+            return render_template('registrationcomplete.html')
 
         return 'That username already exists!'
 
@@ -297,9 +297,16 @@ def add_favourite(cafe_id, user_id):
 
 @app.route('/request_cafe', methods=['POST'])
 def request_cafe():
-    mongo.db.requested_cafes.insert_one(request.form.to_dict())
-    top_three= mongo.db.cafes.aggregate([{"$sort" :{"ratings_avg" :-1}},{ "$limit" : 3}])
-    return render_template('landing.html',top_three=top_three)
+    try:
+        result = session.get('USERNAME', None)
+        if result:
+            username = session['USERNAME']
+        if username:
+            user = mongo.db.users.find_one({'name': username})
+            mongo.db.requested_cafes.insert_one(request.form.to_dict())
+            return render_template('caferequestacknowledged.html')
+    except:
+        return render_template('adviselogin.html')
 
 
 @app.route('/remove_favourite/<cafe_id>/<user_id>')

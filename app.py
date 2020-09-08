@@ -450,9 +450,10 @@ def remove_review(cafe_id, user_id):
         username = session['USERNAME']
         cafes = mongo.db.cafes
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
-        existing_review = get_exisiting_review(cafe_id,user_id)   
+        
         result = cafes.update({'_id': ObjectId(cafe_id)},
                               {'$pull': {'reviews': {'user_id': ObjectId(user_id)}}})
+        existing_review = get_exisiting_review(cafe_id,user_id)   
         app.logger.info('Result = ' + str(result) + ' username = '
                         + str(username) + ' cafe_id= ' + str(cafe_id)
                         + ' user_id= ' + str(user_id))

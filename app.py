@@ -76,7 +76,7 @@ def search_database():
                 return render_template('searchresults.html', cafes=cafes,
                                 user_id=user_id)
 
-    return abort(404, description='search_database:Resource not found')
+    return render_template('adviselogin.html')
 
 # loads each individual cafe page when see more button clicked
 

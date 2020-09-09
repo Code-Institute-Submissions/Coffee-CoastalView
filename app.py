@@ -1,12 +1,8 @@
 import os
 import bcrypt
-from flask import Flask, render_template, redirect, request, url_for, \
-    session, abort, request
+from flask import Flask, render_template, redirect, request, session, abort
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-
-# from flask_debugtoolbar import DebugToolbarExtension
-# import logging
 
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'coffee_coastalview'
@@ -16,16 +12,11 @@ app.config['MONGO_URI'] = os.getenv('MONGO_URI',
 
 app.config["SECRET_KEY"] = os.environ.get('SESSION_SECRET')
 app.secret_key = 'super secret key'
-# app.config['SESSION_TYPE'] = 'filesystem'
-# logging.basicConfig(level=logging.DEBUG)
-# toolbar = DebugToolbarExtension(app)
 
 mongo = PyMongo(app)
 
 
-# loads cafe page with all cafes in Mongo
-
-#@app.route('/')
+#loads landing page 
 @app.route('/get_landing')
 def get_landing():
     result = session.get('USERNAME', None)
@@ -36,9 +27,7 @@ def get_landing():
     return render_template('landing.html',top_three=top_three)
 
 
-
 # loads cafe page with all cafes in Mongo
-
 @app.route('/get_cafes')
 def get_cafes():
     result = session.get('USERNAME', None)
@@ -57,10 +46,14 @@ def get_cafes():
 
         return render_template('adviselogin.html')
 
+
+#Loads search page
 @app.route('/get_searchpage')
 def get_searchpage():
     return render_template('search.html')
 
+
+#allows user to search database and returns cafe if found
 @app.route('/search_database', methods=['GET', 'POST'])
 def search_database():
     if request.method == 'POST':
@@ -73,13 +66,16 @@ def search_database():
                 user_id = user['_id']
                 search_terms =  request.form['search_terms']
                 cafes = mongo.db.cafes.find( { "$text": { "$search" : search_terms, "$caseSensitive" : False } } )
-                return render_template('searchresults.html', cafes=cafes,
+                if cafes.count() != 0:
+                   return render_template('searchresults.html', cafes=cafes,
                                 user_id=user_id)
+                else: 
+                    return render_template('nosearchresults.html')                    
 
     return render_template('adviselogin.html')
 
-# loads each individual cafe page when see more button clicked
 
+# loads each individual cafe page when see more button clicked
 @app.route('/get_individualcafe/<cafe_id>/<user_id>')
 def get_individualcafe(cafe_id, user_id):
     result = session.get('USERNAME', None)
@@ -111,7 +107,6 @@ def get_individualcafe(cafe_id, user_id):
 
 
 # loads user profile page if user logged in, if user not logged in loads log in page
-
 @app.route('/get_profile')
 def get_profile():
     result = session.get('USERNAME', None)
@@ -139,16 +134,12 @@ def get_profile():
 
 
 # loads login page and takes user to profile page if login details correct
-
 @app.route('/')
 @app.route('/index', methods=['GET', 'POST'])
 def index():
-
-
     if request.method == 'GET':
         app.logger.info('Post called in index ')
         return render_template('index.html')
-
     if 'username' in session:
         return 'You are logged in as ' + session['USERNAME']
     cafes = mongo.db.cafes.find()
@@ -160,7 +151,6 @@ def index():
 
 
 # checks to see user login details exist/are correct and if correct returns user to cafes page
-
 @app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
@@ -188,31 +178,19 @@ def login():
     else:
 
         return 'Invalid username/password combination'
-    return render_template('landing.html',top_three=top_three)
+    return render_template('landing.html',top_three=top_three) 
 
 
-@app.route('/edit_user')
-def edit_user():
-    username = session['USERNAME']
-    user = mongo.db.users.find_one({'name': username})
-    return render_template('edituser.html', user=user)
-
-
-# checks to see user login details exist/are correct and if correct returns user to cafes page
-
+#Allows user to update username and password
 @app.route('/update_user', methods=['POST'])
 def update_user():
     if request.method == 'POST':
-        app.logger.info('Post called in update_user ')
-
-    username = request.form['user_name']
-    user_id = request.form['user_id']
-    user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
-    password = request.form['user_password']
-    hashpass = bcrypt.hashpw(request.form['user_password'].encode('utf-8'
+        username = request.form['user_name']
+        user_id = request.form['user_id']
+        user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
+        password = request.form['user_password']
+        hashpass = bcrypt.hashpw(request.form['user_password'].encode('utf-8'
                     ), bcrypt.gensalt())
-
-    # app.logger.info('password encrypted is  ' + str(encryptted))
 
     mongo.db.users.update_one({'_id': user['_id']},
                               {'$set': {'name': username}}, upsert=True)
@@ -227,7 +205,6 @@ def update_user():
 
 
 # brings user to registration page
-
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
@@ -248,8 +225,7 @@ def register():
     return render_template('register.html')
 
 
-# db.users.update({"name" : "JadeO"}, { $addToSet: { favourites: ObjectId("5f4bca9026e1755ced5287ba") }} )
-
+#allows user to add cafe to favourites
 @app.route('/add_favourite/<cafe_id>/<user_id>')
 def add_favourite(cafe_id, user_id):
     """ Updates the user favourites
@@ -273,7 +249,6 @@ def add_favourite(cafe_id, user_id):
         users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) })        
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
         existing_review = get_exisiting_review(cafe_id,user_id)   
-        #flash("Added to your favourites!")
     except:
 
         # raises a 404 error if any of these fail
@@ -283,10 +258,7 @@ def add_favourite(cafe_id, user_id):
                            user_id=user_id,existing_review = existing_review,users_favourites=users_favourites)
 
 
-# db.users.update({"name" : "JadeO"}, { $addToSet: { favourites: ObjectId("5f4bca9026e1755ced5287ba") }} )
-
 # requested cafe to be added to database
-
 @app.route('/request_cafe', methods=['POST'])
 def request_cafe():
     try:
@@ -301,6 +273,7 @@ def request_cafe():
         return render_template('caferequestacknowledged.html')
 
 
+#allows user to remove cafe 
 @app.route('/remove_favourite/<cafe_id>/<user_id>')
 def remove_favourite(cafe_id, user_id):
     """ Removes the user favourites
@@ -332,6 +305,7 @@ def remove_favourite(cafe_id, user_id):
                            user_name=username, user_id=user_id,my_reviews=my_reviews)
 
 
+#allows user to rate cafe out of five stars
 @app.route('/rate_cafe/<cafe_id>/<user_id>', methods=['POST'])
 def rate_cafe(cafe_id, user_id):
     """ Updates the cafe rating and number of ratings
@@ -375,18 +349,14 @@ def rate_cafe(cafe_id, user_id):
                            user_id=user_id,existing_review = existing_review,users_favourites=users_favourites)
 
 
-# logs user out
-
+#Allows user to logout
 @app.route('/logout')
 def logout():
     session.pop('USERNAME', None)
     return render_template('index.html')
 
 
-
-
 # leaves user add review
-
 @app.route('/add_review/<cafe_id>/<user_id>', methods=['POST'])
 def add_review(cafe_id, user_id):
     username = session['USERNAME']
@@ -417,10 +387,10 @@ def get_exisiting_review(cafe_id, user_id):
                 break
             else:
                 existing_review = ""       
-    return existing_review               
+    return existing_review
+
 
 # leaves user update review
-
 @app.route('/update_review/<cafe_id>/<user_id>', methods=['POST'])
 def update_review(cafe_id, user_id):
     username = session['USERNAME']
@@ -428,6 +398,7 @@ def update_review(cafe_id, user_id):
     details = request.form.get('details')
     cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
     
+
     app.logger.info('Details = ' + str(details) + ' username = '
                     + str(username) + ' cafe_id= ' + str(cafe_id)
                     + ' user_id= ' + str(user_id))
@@ -441,6 +412,7 @@ def update_review(cafe_id, user_id):
                            user_id=user_id,existing_review = existing_review,users_favourites=users_favourites)
 
 
+#Allows user delete a review
 @app.route('/remove_review/<cafe_id>/<user_id>')
 def remove_review(cafe_id, user_id):
     """ Removes the user review
@@ -473,7 +445,6 @@ def remove_review(cafe_id, user_id):
 
 app.debug = True
 
-# app.run()
 
 if __name__ == '__main__':
     app.secret_key = 'mysecret'

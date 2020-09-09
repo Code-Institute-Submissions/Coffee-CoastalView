@@ -9,15 +9,8 @@
         height: 500,
         transition: 500,
         interval: 6000
-      });   
-      
+      });      
 
 // Modal Init
     let modalElems = document.querySelectorAll('.modal');
     M.Modal.init(modalElems);    
-    
-//rating 
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems,{});
-  });

@@ -1,129 +1,116 @@
+<!DOCTYPE html>
 {% extends 'base.html' %} {% block content %}
 <!--Cafe Image and Details Section-->
 <div class="section">
-	<div class="row">
-		<div class="col s12 center-align">
-			<h1>{{cafe.name}}</h1> 
+    <div class="row">
+        <div class="col s12 center-align">
+            <h1>{{cafe.name}}</h1>
         </div>
-	</div>
-	<div class="row">
-		<div class="col s12 center-align"> <img src="../../{{cafe.imagepath}}"> </div>
-	</div>
-	<div class="row">
-		<div class="col s12 center-align">
-			<h5>{{cafe.address}}</h5> 
+    </div>
+    <div class="row">
+        <div class="col s12 center-align"><img src="../../{{cafe.imagepath}}" /></div>
+    </div>
+    <div class="row">
+        <div class="col s12 center-align">
+            <h5>{{cafe.address}}</h5>
         </div>
-	</div>
+    </div>
     <!--Add to Favourties Section-->
     <div class="section">
         <div class="row">
-
             <div class="col s12 center-align">
                 {% if users_favourites.count() == 0 %}
-                    <a href="{{ url_for('add_favourite', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">Add to Favourites</a>
-                {% else %}   
-                    <a href="{{ url_for('remove_favourite', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">Remove from Favourites</a> 
+                <a href="{{ url_for('add_favourite', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">Add to Favourites</a>
+                {% else %}
+                <a href="{{ url_for('remove_favourite', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">Remove from Favourites</a>
                 {% endif %}
             </div>
         </div>
-    </div>    
-	<!--Rating Section-->
+    </div>
+    <!--Rating Section-->
     <div class="section">
         <div class="row">
-			<div class="col s12 center-align">
-				<h5>RATING</h5> 
+            <div class="col s12 center-align">
+                <h5>RATING</h5>
             </div>
             <div class="row">
-            
                 <div class="col rating-box offset-m3 offset-s2 offset-l4">
                     <!-- displays shaded stars to match average rating -->
-                    {% for i in range(1,6) %}
-                        {% if cafe.ratings_avg|int < i %}
-                        <i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i>
-                        {% else %}
-                        <i class="material-icons blue-text text-darken-2 left cafe-rating">star</i>
-                        {% endif %}
-                    {% endfor %}
-                    <a class="waves-effect waves-light btn btn-flat  modal-trigger light-blue lighten-3" href="#RateModal">
-                    <i class="material-icons left">free_breakfast</i>Rate This Cafe!</a>
+                    {% for i in range(1,6) %} {% if cafe.ratings_avg|int < i %}
+                    <i class="material-icons blue-text text-darken-2 left cafe-rating">star_border</i>
+                    {% else %}
+                    <i class="material-icons blue-text text-darken-2 left cafe-rating">star</i>
+                    {% endif %} {% endfor %}
+                    <a class="waves-effect waves-light btn btn-flat modal-trigger light-blue lighten-3" href="#RateModal"> <i class="material-icons left">free_breakfast</i>Rate This Cafe!</a>
                 </div>
-               
             </div>
         </div>
     </div>
-    
+
     <!-- Rate modal -->
     <div id="RateModal" class="modal">
-		<form method="POST" action="{{ url_for('rate_cafe', cafe_id=cafe._id,user_id=user_id) }}">
-            <div class=" modal-content modal-rating">
-            
+        <form method="POST" action="{{ url_for('rate_cafe', cafe_id=cafe._id,user_id=user_id) }}">
+            <div class="modal-content modal-rating">
                 <p>Tell us how much do you like this Cafe!</p>
-              <fieldset class="rating">
-    <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
-    
-    <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
-   
-    <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
-    
-    <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
-    
-    <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
-    
-</fieldset>
+                <fieldset class="rating">
+                    <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5" title="Awesome - 5 stars"></label>
+
+                    <input type="radio" id="star4" name="rating" value="4" /><label class="full" for="star4" title="Pretty good - 4 stars"></label>
+
+                    <input type="radio" id="star3" name="rating" value="3" /><label class="full" for="star3" title="Meh - 3 stars"></label>
+
+                    <input type="radio" id="star2" name="rating" value="2" /><label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+
+                    <input type="radio" id="star1" name="rating" value="1" /><label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                </fieldset>
             </div>
             <div class="modal-footer">
-                <button class="modal-close waves-effect waves-blue btn-flat blue-text light-blue lighten-3" type="submit"
-                        name="action">Rate
-                </button>
+                <button class="modal-close waves-effect waves-blue btn-flat blue-text light-blue lighten-3" type="submit" name="action">Rate</button>
             </div>
         </form>
     </div>
     <!--Reviews Section-->
     <div class="section">
-		<div class="row">
-			<div class="col s12 center-align">
-				<h5>REVIEWS</h5> 
+        <div class="row">
+            <div class="col s12 center-align">
+                <h5>REVIEWS</h5>
             </div>
-		</div>
-    	<div class="row">
-        {% for review in cafe.reviews %}	
-            
-		    <div class="col s12 m6 l4 xl3">
-				<div class="card small">
-					<div class="card-content">
-						<h6 class="card-title">{{review.details}}</h6>
+        </div>
+        <div class="row">
+            {% for review in cafe.reviews %}
+
+            <div class="col s12 m6 l4 xl3">
+                <div class="card small">
+                    <div class="card-content">
+                        <h6 class="card-title">{{review.details}}</h6>
                         <h6 class="card-title">{{review.user_name}}</h6>
-                        {% if review.user_name == session['USERNAME'] %}  
+                        {% if review.user_name == session['USERNAME'] %}
                         <p></p>
                         <div class="card-action">
-                        <a class="waves-effect waves-light btn btn-flat modal-trigger white-text light-blue darken-4" href="#DeleteModal">DELETE</a>
+                            <a class="waves-effect waves-light btn btn-flat modal-trigger white-text light-blue darken-4" href="#DeleteModal">DELETE</a>
                         </div>
-                        
+
                         {% endif %}
-					</div>
-				</div>
+                    </div>
+                </div>
             </div>
             <!-- Rate modal -->
-    <div id="DeleteModal" class="modal">
-            <div class=" modal-content">
-                <p>Are you sure you want to delete your review?</p>
-                
+            <div id="DeleteModal" class="modal">
+                <div class="modal-content">
+                    <p>Are you sure you want to delete your review?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-close waves-effect waves-blue btn-flat blue-text light-blue lighten-3" type="submit" name="action">No!</button>
+                    <a class="waves-effect waves-light btn btn-flat modal-trigger red accent-3" href="{{ url_for('remove_review', cafe_id=cafe._id, user_id=user_id) }}">Yes, Delete</a>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button class="modal-close waves-effect waves-blue btn-flat blue-text light-blue lighten-3" type="submit"
-                        name="action">No!
-                </button>
-                <a class="waves-effect waves-light btn btn-flat modal-trigger red accent-3" href="{{ url_for('remove_review', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content">Yes, Delete</a>
-            </div>
-    </div>
-		{% endfor %}
-		</div>            
+            {% endfor %}
+        </div>
     </div>
 
-    
     <!--Add Review-->
-	<div class="row">
-		{% if existing_review == "" %}
+    <div class="row">
+        {% if existing_review == "" %}
         <form method="POST" class="col s12 m12 l12 xl12 box" action="{{ url_for('add_review', cafe_id=cafe._id, user_id=user_id) }}">
             <div class="form-group">
                 <label for="review_user">Write Review Below</label>
@@ -131,20 +118,20 @@
                     <textarea id="textarea1" name="details" class="materialize-textarea" required="required"></textarea>
                 </div>
             </div>
-			<button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Add Review </button>
+            <button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Add Review</button>
         </form>
         {% else %}
         <form method="POST" class="col s12 m12 l12 xl12 box" action="{{ url_for('update_review', cafe_id=cafe._id, user_id=user_id) }}">
             <div class="form-group">
                 <label for="review_user">Update Your Review Below</label>
-                <div class="input-field col s12 box">                   
-                        <textarea id="textarea1" name="details" class="materialize-textarea" required="required">{{ existing_review  }}</textarea>          
+                <div class="input-field col s12 box">
+                    <textarea id="textareareview" name="details" class="materialize-textarea" required="required">{{ existing_review  }}</textarea>
                 </div>
-
             </div>
-			<button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Update Review </button>
+            <button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Update Review</button>
         </form>
         {% endif %}
-	</div> 
-  
+    </div>
+
     {% endblock %}
+</div>

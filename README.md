@@ -22,14 +22,26 @@ The website was designed with ease of user at the fore-front of the design.
 -	As a website user, I want satisfying images and colors in the game.
 -	As a registered website user, I want to be able to add a coffee shop to my “want to visit” list. 
 
-Mock Ups
-I designed the mock ups for the site using Figma. Mock ups for the website can be found in the following folder
+# H1 Mock Ups
+I designed the mock ups for the site using Figma. Mock ups for the website can be found in the following [folder](/MockUps)
+
+# H1 Technologies Used
+[HTML](https://html.com/) – the project uses html as the main language to build the website
+[Materalize](https://materializecss.com/) – Used as the main frontend framework.
+[CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) – CSS is used to add individual style to the website
+[Javascript](https://www.javascript.com/) - JS was used to initate certain features of Materalize.
+[Font Awesome](https://fontawesome.com/) – this site was used to add icons to the site.
+[MongoBD](https://www.mongodb.com/cloud/atlas/register) - Used as the main database technology.
+[Jinga](https://jinja.palletsprojects.com/en/2.11.x/) - Used as the main templating language for template manipulation.
+[Heroku](https://signup.heroku.com/?c=70130000000NeLCAA0&gclid=Cj0KCQjw-uH6BRDQARIsAI3I-UcV96h-n1NbhCxrdQnrMSjNQ72hwiisldeoifqoNJDw0Bf6ekDhtvwaAq5iEALw_wcB) - Used to host the website.
+
+# H1 Features left to implement:
+1. Pagination - In the future I would like to add the Pagination feautre to display cafes and reviews in a tidier manor. 
+
+# H1 Deployment
+I used Visual Studio to write, test and run my code before merging this code onto Gitpod for the purpose of this project. 
+On completion of each section I committed the work to GitHub. From the Github platform, I deployed the project to a hosting platform. The project is hosted on [Heroku](https://www.heroku.com/); in order to make the project go live, I had to insure I had the correct settings employed in Gitpod/Heroku. I used git in the command line and followed the instructions supplied by Heroku. Once activated my site was available at the following address: (https://coffee-coastal-view.herokuapp.com/).
 
 
-HTML – the project uses html as the main language to build the website
-Materalize – Used as the main frontend framework.
-CSS – CSS is used to add individual style to the website
-Javascript - JS was used to initate certain features of Materalize.
-Font Awesome – this site was used to add icons to the site.
-MongoBD - Used as the main database technology.
+
 

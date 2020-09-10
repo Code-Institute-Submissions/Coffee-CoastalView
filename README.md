@@ -12,18 +12,23 @@ Site visitors will also be allowed to fill out a form if they would like a new c
 
 
 # H1 UX
-The website was designed with ease of user at the fore-front of the design.
+The website was designed with registered users at the fore-front of the design.
 
--	As a user I want to be able to Navigate to different pages of the website 
--	As a user I want to be able to click on a coffee shops and be brought to their website or social media 
--	As a user I want to rate Coffee shops on the website and add my personal review 
--	As a user of the website I want to be able to search for a coffee shop by location 
--	As a website user, I want information on how to use certain functions
--	As a website user, I want satisfying images and colors in the game.
--	As a registered website user, I want to be able to add a coffee shop to my “want to visit” list. 
+-   As a user of the site I want to be able to register.
+-	As a  registered user I want to be able to Navigate to different pages of the website 
+-	As a  registered user I want to be able to click on a coffee shops and be brought to their website or social media 
+-	As a  registered user I want to rate Coffee shops on the website and add my personal review 
+-	As a  registered user of the website I want to be able to search for a coffee shop by location 
+-	As a  registered website user, I want to be able to add, update and delete reviews.
+-	As a  registered website user, I want to be able to add cafes to my "favourites/want to list list"
+-	As a registered website user, I want to be able to remove cafes from my “favourites/want to visit” list. 
 
 # H1 Mock Ups
 I designed the mock ups for the site using Figma. Mock ups for the website can be found in the following [folder](/MockUps)
+
+# H1 Database Design
+Before beginning my project I used [Draw.io](https://www.draw.io/) to create the Database Schema
+which helped me to visualize how the project would work and how the code should be written. Please find the Schema files in the following [folder](/DatabaseDesign)
 
 # H1 Technologies Used
 -[HTML](https://html.com/) – the project uses html as the main language to build the website

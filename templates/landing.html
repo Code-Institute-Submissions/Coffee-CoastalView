@@ -78,8 +78,11 @@
                 </div>
             </div>
             <div class="col s12 m6">
-                <form action="{{ url_for('request_cafe') }}" method="POST">
+                <form action="{{ url_for('send_email') }}" method="POST">
                     <div class="card-panel grey lighten-3">
+                        {% for message in get_flashed_messages() %}
+                        <p>{{ message }}</p>
+                        {% endfor %}
                         <h5>Please fill out this form</h5>
                         <div class="input-field">
                             <input type="text" name="cafe_name" placeholder="Cafe Name" id="cafename" required />
@@ -89,7 +92,11 @@
                             <input type="text" name="cafe_location" placeholder="Cafe Location" id="cafelocation" required />
                             <label for="cafelocation">Cafe Location</label>
                         </div>
-                        <button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Request Cafe</button>
+                        <div class="input-field">
+                            <input type="text" name="your_email_address" placeholder="your email address" id="cafelocation" required />
+                            <label for="email">Email Address</label>
+                        </div>
+                        <button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Send Emaill</button>
                     </div>
                 </form>
             </div>

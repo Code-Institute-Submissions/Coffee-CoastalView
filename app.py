@@ -1,8 +1,21 @@
 import os
 import bcrypt
-from flask import Flask, render_template, redirect, request, session, abort
+from flask import Flask, render_template, redirect, request, session, abort, flash
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
+from flask_mail import Mail, Message
+import logging
+
+
+mail_settings = {
+    "MAIL_SERVER": 'smtp.gmail.com',
+    "MAIL_PORT": 465,
+    "MAIL_USE_TLS": False,
+    "MAIL_USE_SSL": True,
+    "MAIL_USERNAME": os.environ['EMAIL_USER'],
+    "MAIL_PASSWORD": os.environ['EMAIL_PASSWORD']
+}
+
 
 app = Flask(__name__)
 app.config['MONGO_DBNAME'] = 'coffee_coastalview'
@@ -14,7 +27,23 @@ app.config["SECRET_KEY"] = os.environ.get('SESSION_SECRET')
 app.secret_key = 'super secret key'
 
 mongo = PyMongo(app)
+app.config.update(mail_settings)
+mail = Mail(app)
 
+@app.route('/send_email', methods=['GET', 'POST'])
+def send_email():
+        if request.method == 'POST':
+            sender = app.config.get("MAIL_USERNAME")
+            recipients=["osullivanccuserjade@gmail.com"]
+            body= "This is a test email I sent with Gmail and Python!"
+            app.logger.info("sender " + str(sender) + " recipient " + str(recipients) )
+            msg = Message(subject="Hello",sender=sender,recipients=recipients,body=body)
+            mail.send(msg)
+            top_three= mongo.db.cafes.aggregate([{"$sort" :{"ratings_avg" :-1}},{ "$limit" : 3}])
+            flash("Your email has been sent, we will be in touch soon")
+            return render_template('landing.html',top_three=top_three)
+        else:
+            return abort(404, description='Resource not found')
 
 #loads landing page 
 @app.route('/get_landing')

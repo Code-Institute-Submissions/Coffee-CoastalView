@@ -1,6 +1,7 @@
 import os
 import bcrypt
-from flask import Flask, render_template, redirect, request, session, abort, flash
+from flask import Flask, render_template, redirect, request, session, abort,flash
+
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from flask_mail import Mail, Message

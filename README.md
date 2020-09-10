@@ -1,4 +1,4 @@
-# H1 Coffee & Coastal Views 
+# Coffee & Coastal Views 
 Coffee & Coastal Views is a web application that contains information about cafes along the Wild Atlantic Way in Ireland. It is a website that allows users to find cafes serving quality coffee in popular tourist locations. Site visitors can browse cafe reviews and ratings or they can make an account and leave their own reviews/rate the cafes. Users can also add cafes to their collection of "want to visit" for easy recall when they are in the area.
 
 Users will also have the ability to, once registered and logged in, edit and delete the reviews and rating they have left previously.
@@ -11,7 +11,7 @@ Site visitors will also be allowed to fill out a form if they would like a new c
 
 
 
-# H1 UX
+#  UX
 The website was designed with registered users at the fore-front of the design.
 
 -   As a user of the site I want to be able to register.
@@ -23,14 +23,14 @@ The website was designed with registered users at the fore-front of the design.
 -	As a  registered website user, I want to be able to add cafes to my "favourites/want to list list"
 -	As a registered website user, I want to be able to remove cafes from my “favourites/want to visit” list. 
 
-# H1 Mock Ups
+# Mock Ups
 I designed the mock ups for the site using Figma. Mock ups for the website can be found in the following [folder](/MockUps)
 
-# H1 Database Design
+#  Database Design
 Before beginning my project I used [Draw.io](https://www.draw.io/) to create the Database Schema
 which helped me to visualize how the project would work and how the code should be written. Please find the Schema files in the following [folder](/DatabaseDesign)
 
-# H1 Technologies Used
+# Technologies Used
 -[HTML](https://html.com/) – the project uses html as the main language to build the website
 -[Materalize](https://materializecss.com/) – Used as the main frontend framework.
 -[CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) – CSS is used to add individual style to the website
@@ -40,13 +40,43 @@ which helped me to visualize how the project would work and how the code should 
 -[Jinga](https://jinja.palletsprojects.com/en/2.11.x/) - Used as the main templating language for template manipulation.
 -[Heroku](https://signup.heroku.com/?c=70130000000NeLCAA0&gclid=Cj0KCQjw-uH6BRDQARIsAI3I-UcV96h-n1NbhCxrdQnrMSjNQ72hwiisldeoifqoNJDw0Bf6ekDhtvwaAq5iEALw_wcB) - Used to host the website.
 
-# H1 Features left to implement:
-1. Pagination - In the future I would like to add the Pagination feautre to display cafes and reviews in a tidier manor. 
+#  Important Features
+## NavBar
+This feature allows user to move from page to page. When a user is logged in it displays an option to visit a page called "Profile" which is the users profile page. There is also a link to "Logout" if a user is logged in. In the case that no user is logged in the NavBar simply displays a "Login" Tab.
+##  Search Box
+This allows logged in users to search for a cafe by typing in part of the name (as long as it is not "the" or "and") or the location of a cafe. A new page loads with the search findings, unless there are no matches in which case a page renders that displays a "No search results" message. 
+## Forms
+A number of forms are used throughout the website. These forms allow users to register, sign in, submit reviews and request new cafes to be added to the website. 
+## Modals
+The website makes use of modals to ensure that users are sure they want to delete a review or favourite. 
+## Flash Messages
+Flash messaging is used throughout the site to inform users when an action has been completed. E.g "you have now logged out" 
 
-# H1 Deployment
-I used Visual Studio to write, test and run my code before merging this code onto Gitpod for the purpose of this project. 
+# Features left to implement:
+1. Pagination - In the future I would like to add the Pagination feautre to display cafes and reviews in a tidier manor. 
+2. Admin Page - I would also like to add a admin page where an admin user could login and have different functionailty to a normal user. Such functionailties could include adding a new cafe. 
+
+# Deployment
+I used Visual Studio to write, test and run my code before merging this code onto Gitpod for the purpose of this project.
 On completion of each section I committed the work to GitHub. From the Github platform, I deployed the project to a hosting platform. The project is hosted on [Heroku](https://www.heroku.com/); in order to make the project go live, I had to insure I had the correct settings employed in Gitpod/Heroku. I used git in the command line and followed the instructions supplied by Heroku. Once activated my site was available at the following address: (https://coffee-coastal-view.herokuapp.com/).
 
+# Testing and Debugging
+- Python:  I used the built-in Python dedugger in Visual Studio to debug my Python. I set breakpoints to see where certain functions/code was failing. This was a really useful tool throughout the development of this project. I also used [ExtendClass.com](https://extendsclass.com/python-tester.html) to validate my python code. No syntax errors were detected.
+- HTML & CSS: In order to validate my HTML & CSS I availed of [W3C Validator](https://jigsaw.w3.org/css-validator/validator) which returned no errors.
+- Javascript: I used [Esprima](https://esprima.org/demo/validate.html) to validate my javascript and no errors were returned. 
+- Responsive: To test if the website was responsive I used the following [website](http://ami.responsivedesign.is/#) - the website was responsive across all screen sizes. 
 
+# Additional Resources
+In order to complete this project I studied MongoBD in great depth and complied some useful functions and resources that I found very 
+beneficial. I complied them in a wiki which can be viewed [here](https://github.com/Jadeosull93/Coffee-CoastalView/wiki).
 
+# Credits
+## Contents 
+All imagery and addresses were taking from [Instagram](www.Instagram.com) and are to be used for the purpose of this project only. 
 
+##  References 
+All links can be found in my [Github Wiki](https://github.com/Jadeosull93/Coffee-CoastalView/wiki)
+
+## People
+A special thank you to my father John who has shown great patience in explaining certain concepts and investing his spare time into helping me to understand and unravil issues I encountered through the process. 
+Another Thank You to my mentor [Precious Ijege](https://github.com/precious-ijege/) who has been incredibly patient throughout this project as I had started a new job and was struggling. He has given excellent constructive feedback as always and pushed me to develop the project to the best of my abilites. 

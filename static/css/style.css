@@ -1,5 +1,4 @@
 /* navbar */
-
 .nav {
 	color: #fff;
 	background-color: #598AB0;
@@ -16,7 +15,6 @@ nav .brand-logo{
 }
 
 /* cards */
-
 .card.small .card-image, .card.medium .card-image, .card.large .card-image {
 	height: 70%;
 }
@@ -90,6 +88,7 @@ i:hover {
 .section-contact h5 {
 	margin-bottom: 30px;
 }
+
 .container {
 	margin: 0 auto;
 	max-width: 1280px;
@@ -117,25 +116,22 @@ h1 { font-size: 1.5em; margin: 10px; }
   content: "\f005";
 }
 
-
 .rating > label { 
   color: #ddd; 
  float: right; 
 }
 
-.rating > input:checked ~ label, /* show gold star when clicked */
+.rating > input:checked ~ label, /* show blue star when clicked */
 .rating:not(:checked) > label:hover, /* hover current star */
 .rating:not(:checked) > label:hover ~ label { color: #42a5f5;  } /* hover previous stars in list */
-
 .rating > input:checked + label:hover, /* hover current star when changing rating */
 .rating > input:checked ~ label:hover,
 .rating > label:hover ~ input:checked ~ label, /* lighten current selection */
 .rating > input:checked ~ label:hover ~ label { color: #42a5f5;  } 
 
 /* Media Queries */
-
 @media screen and (min-width: 1400px) {
-	.card {
+    .card {
 		position: relative;
 		margin: .5rem 0 1rem 0;
 		background-color: #fff;
@@ -147,3 +143,28 @@ h1 { font-size: 1.5em; margin: 10px; }
 		height: 550px!important;
 		}
 	}
+
+    .card-panel {
+	-webkit-transition: -webkit-box-shadow .25s;
+	transition: -webkit-box-shadow .25s;
+	transition: box-shadow .25s;
+	transition: box-shadow .25s, -webkit-box-shadow .25s;
+	padding: 24px;
+	margin: .5rem 0 1rem 0;
+	border-radius: 2px;
+	background-color: #fff;
+	height: 330px !important;
+}
+
+.card .review{
+	position: relative;
+	margin: .5rem 0 1rem 0;
+	background-color: #fff;
+	-webkit-transition: -webkit-box-shadow .25s;
+	transition: -webkit-box-shadow .25s;
+	transition: box-shadow .25s;
+	transition: box-shadow .25s, -webkit-box-shadow .25s;
+	border-radius: 2px;
+	height: 150px!important;
+	border: 1px #598AB0 !important
+}

@@ -30,29 +30,32 @@
 </div>
 {% for cafe in cafes %}
 <div class="container">
-   <div class="row">
-      <div class="col s12 m6 offset-m3 offset-s0">
-         <ul class="collection offset-m3" >
-            <li class="collection-item avatar">
-            <img src="../../{{cafe.imagepath}}" alt="" class="circle">
-               <p>
-                  {{cafe.name}}<br>
-                  {{cafe.address}}<br>
+   {% for favourite in cafe.favourites %}
+   {% if favourite.user_id == user_id %}
+         <div class="row">
+            <div class="col s12 m6 offset-m3 offset-s0">
+               <ul class="collection offset-m3" >
+                  <li class="collection-item avatar">
+                  <img src="../../{{cafe.imagepath}}" alt="" class="circle">
+                     <p>
+                        {{cafe.name}}<br>
+                        {{cafe.address}}<br>
+                     
+      
+                        <br>
+                        
+                        <!-- <a href="=RemoveModal"  class="waves-effect waves-light btn btn-flat modal-trigger white-text light-blue darken-4">Remove</a> -->
+                        
+
+                     </p>
+                  </li>
+               </ul>
                
-               {% for favourite in cafe.favourites %}
-                  {% if favourite.user_name == session['USERNAME'] %}  
-                  <br>
-                  
-                  <a href="=RemoveModal" class="waves-effect waves-light btn btn-flat modal-trigger white-text light-blue darken-4">Remove</a>
-                  
-                  {% endif %}
-               {% endfor %}
-               </p>
-            </li>
-         </ul>
-         
-      </div>
-   </div>
+            </div>
+         </div>
+
+   {% endif %}
+   {% endfor %}
 </div>
 {% endfor %} 
 
@@ -62,27 +65,29 @@
 </div>
 {% for cafe in my_reviews %}
 <div class="container">
-   <div class="row">
-      <div class="col s12 m6 offset-m3 offset-0">
-         <ul class="collection offset-m3" >
-            <li class="collection-item avatar">
-            <img src="../../{{cafe.imagepath}}" alt="" class="circle">
-               <p>
-                <h6>  {{cafe.name}}<br>
-                  {{cafe.address}}</h6><br>
+   {% for review in cafe.reviews %}
+   {% if review.user_id == user_id %}
+      <div class="row">
+         <div class="col s12 m6 offset-m3 offset-0">
+            <ul class="collection offset-m3" >
+               <li class="collection-item avatar">
+               <img src="../../{{cafe.imagepath}}" alt="" class="circle">
+                  <p>
+                  <h6>  {{cafe.name}}<br>
+                     {{cafe.address}}</h6><br>
+                     
                   
-               
-               {% for review in cafe.reviews %}
-                  {% if review.user_name == session['USERNAME'] %} 
-                  "{{review.details}}" <br><br>
-                  <a class="waves-effect waves-light btn btn-flat modal-trigger white-text light-blue darken-4" href="#DeleteModal">DELETE</a>
-                  {% endif %}
-               {% endfor %}
-               </p>
-            </li>
-         </ul>
+   
+                     "{{review.details}}" <br><br>
+                     <!-- <a class="waves-effect waves-light btn btn-flat modal-trigger white-text light-blue darken-4" href="#DeleteModal">DELETE</a> -->
+
+                  </p>
+               </li>
+            </ul>
+         </div>
       </div>
-   </div>
+   {% endif %}
+   {% endfor %}
 </div>
 <div id="DeleteModal" class="modal">
             <div class=" modal-content">
@@ -96,7 +101,7 @@
                 <a class="waves-effect waves-light btn btn-flat modal-trigger red accent-3" href="{{ url_for('remove_review', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content">Yes, Delete</a>
             </div>
     </div>
-<div id="RemoveModal" class="modal">
+<div id="RemoveModal" class="modal" >
             <div class=" modal-content">
                 <p>Are you sure you want to remove this cafe from your list?</p>
                 

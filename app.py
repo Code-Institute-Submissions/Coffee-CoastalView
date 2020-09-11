@@ -3,7 +3,7 @@ import bcrypt
 from flask import Flask, render_template, redirect, request, session, abort,flash
 
 from flask_pymongo import PyMongo
-from bson.objectid import ObjectId
+from bson.objectid import ObjectId 
 from flask_mail import Mail, Message
 import logging
 
@@ -19,14 +19,14 @@ mail_settings = {
 
 
 app = Flask(__name__)
-app.config['MONGO_DBNAME'] = 'coffee_coastalview'
-app.config['MONGO_URI'] = os.getenv('MONGO_URI',
-                                    'mongodb+srv://JOS:Malteasers1!@cluster0.qn0az.mongodb.net/coffee_coastalview?retryWrites=true&w=majority'
-                                    )
+app.config["MONGO_DBNAME"] = 'coffee_coastalview'
+app.config["MONGO_URI"] = os.environ.get('MONGO_URI') 
+app.config["SECRET_KEY"] = os.environ.get('SESSION_SECRET') 
 
-app.config["SECRET_KEY"] = os.environ.get('SESSION_SECRET')
-app.secret_key = 'super secret key'
 
+
+
+logging.basicConfig(level=logging.DEBUG)
 mongo = PyMongo(app)
 app.config.update(mail_settings)
 mail = Mail(app)
@@ -35,10 +35,14 @@ mail = Mail(app)
 def send_email():
         if request.method == 'POST':
             sender = app.config.get("MAIL_USERNAME")
-            recipients=["osullivanccuserjade@gmail.com"]
-            body= "This is a test email I sent with Gmail and Python!"
+            recipients=["osullivanccuserjade@gmail.com;"]
+            cafe_name = request.form['cafe_name']
+            cafe_location = request.form['cafe_location']
+            email_address = request.form['email_address']
+            recipients.append(email_address)
+            body= "Cafe Request for " + cafe_name + " in " + str(cafe_location) + " from " + str(email_address)
             app.logger.info("sender " + str(sender) + " recipient " + str(recipients) )
-            msg = Message(subject="Hello",sender=sender,recipients=recipients,body=body)
+            msg = Message(subject="New Cafe Request",sender=sender,recipients=recipients,body=body)
             mail.send(msg)
             top_three= mongo.db.cafes.aggregate([{"$sort" :{"ratings_avg" :-1}},{ "$limit" : 3}])
             flash("Your email has been sent, we will be in touch soon")
@@ -520,5 +524,4 @@ app.debug = True
 
 
 if __name__ == '__main__':
-    app.secret_key = 'mysecret'
     app.run(debug=True)

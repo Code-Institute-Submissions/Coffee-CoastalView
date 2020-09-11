@@ -35,7 +35,7 @@ mail = Mail(app)
 def send_email():
         if request.method == 'POST':
             sender = app.config.get("MAIL_USERNAME")
-            recipients=["osullivanccuserjade@gmail.com;"]
+            recipients=["osullivanccuserjade@gmail.com"]
             cafe_name = request.form['cafe_name']
             cafe_location = request.form['cafe_location']
             email_address = request.form['email_address']
@@ -202,8 +202,8 @@ def login():
                         )
 
     users = mongo.db.users
-    login_user = users.find_one({'name': request.form['username']})
-    form_password = request.form['pass'].encode('utf-8')
+    login_user = users.find_one({'name': request.form['user_name']})
+    form_password = request.form['user_password'].encode('utf-8')
 
     if login_user:
 
@@ -215,7 +215,7 @@ def login():
 
             # create a session cookie
 
-            session['USERNAME'] = request.form['username']
+            session['USERNAME'] = request.form['user_name']
             cafes = mongo.db.cafes.find()
             top_three= mongo.db.cafes.aggregate([{"$sort" :{"ratings_avg" :-1}},{ "$limit" : 3}])
             return render_template('landing.html',top_three=top_three)
@@ -262,13 +262,13 @@ def update_user():
 def register():
     try:
         if request.method == 'POST':
-            username = request.form['username']            
+            username = request.form['user_name']            
             users = mongo.db.users
             existing_user = users.find_one({'name': username})
 
             if existing_user is None:
                 
-                hashpass = bcrypt.hashpw(request.form['pass'].encode('utf-8'
+                hashpass = bcrypt.hashpw(request.form['user_password'].encode('utf-8'
                         ), bcrypt.gensalt())
                 users.insert({'name': username,
                             'password': hashpass})

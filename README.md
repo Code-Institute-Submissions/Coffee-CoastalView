@@ -31,14 +31,21 @@ Before beginning my project I used [Draw.io](https://www.draw.io/) to create the
 which helped me to visualize how the project would work and how the code should be written. Please find the Schema & flowcharts files in the following [folder](/DatabaseDesign)
 
 # Technologies Used
-*[HTML](https://html.com/) – the project uses html as the main language to build the website
-*[Materalize](https://materializecss.com/) – Used as the main frontend framework.
-*[CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) – CSS is used to add individual style to the website
-*[Javascript](https://www.javascript.com/) - JS was used to initate certain features of Materalize.
-*[Font Awesome](https://fontawesome.com/) – this site was used to add icons to the site.
-*[MongoBD](https://www.mongodb.com/cloud/atlas/register) - Used as the main database technology.
-*[Jinga](https://jinja.palletsprojects.com/en/2.11.x/) - Used as the main templating language for template manipulation.
-*[Heroku](https://signup.heroku.com/?c=70130000000NeLCAA0&gclid=Cj0KCQjw-uH6BRDQARIsAI3I-UcV96h-n1NbhCxrdQnrMSjNQ72hwiisldeoifqoNJDw0Bf6ekDhtvwaAq5iEALw_wcB) - Used to host the website.
+* [HTML](https://html.com/) – the project uses html as the main language to build the website
+* [Materalize](https://materializecss.com/) – Used as the main frontend framework.
+* [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS) – CSS is used to add individual style to the website
+* [Javascript](https://www.javascript.com/) - JS was used to initate certain features of Materalize.
+* [Font Awesome](https://fontawesome.com/) – this site was used to add icons to the site.
+* [MongoBD](https://www.mongodb.com/cloud/atlas/register) - Used as the main database technology.
+* [Jinga](https://jinja.palletsprojects.com/en/2.11.x/) - Used as the main templating language for template manipulation.
+* [Heroku](https://signup.heroku.com/?c=70130000000NeLCAA0&gclid=Cj0KCQjw-uH6BRDQARIsAI3I-UcV96h-n1NbhCxrdQnrMSjNQ72hwiisldeoifqoNJDw0Bf6ekDhtvwaAq5iEALw_wcB) - Used to host the website.
+* [Flask](https://flask.palletsprojects.com/en/1.1.x/) - I used the Flask framework to construct this project which included the following modules:
+  * bycrpt 
+  * Flash 
+  * Flask Mail 
+  * Render Template
+  * Pymongo 
+
 
 #  Important Features
 ## NavBar

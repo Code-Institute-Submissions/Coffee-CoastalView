@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 {% extends 'base.html' %} {% block content %}
+<!--Register form-->
 <div class="container">
     <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            <form method="POST" action="{{ url_for('register') }}">
+        <div class="col s12 m6 offset-m2 offset-s2 offset-l3">
+            <form class="login" method="POST" action="{{ url_for('register') }}">
                 {% for message in get_flashed_messages() %}
                 <p>{{ message }}</p>
                 {% endfor %}

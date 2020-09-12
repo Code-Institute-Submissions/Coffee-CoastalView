@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% block content %}
+<!--Welcome and User details section-->
 <div class="container">
    <div class="row">
       <div class="col s12 center-align">
@@ -23,7 +24,7 @@
    </div>
 </div>
 </div> 
-
+<!--User Favourites List-->
 <div class="col s12 center-align">
    <h4>CAFES I WANT TO VISIT</h4>
    <a class="waves-effect waves-light btn btn-flat modal-trigger blue-text light-blue lighten-3" href="{{ url_for('get_cafes') }}" class="secondary-content">Find Cafes to Add</a>
@@ -40,25 +41,18 @@
                      <p>
                         {{cafe.name}}<br>
                         {{cafe.address}}<br>
-                     
-      
                         <br>
-                        
-                        <!-- <a href="=RemoveModal"  class="waves-effect waves-light btn btn-flat modal-trigger white-text light-blue darken-4">Remove</a> -->
                         <a href="{{ url_for('get_individualcafe', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">See More</a>    
-
                      </p>
                   </li>
-               </ul>
-               
+               </ul>  
             </div>
          </div>
-
    {% endif %}
    {% endfor %}
 </div>
 {% endfor %} 
-
+<!--Displays cafes users have reviewed-->
 {% if my_reviews.count() != 0 %}
 <div class="col s12 center-align">
    <h4>CAFES I HAVE REVIEWED</h4>
@@ -75,11 +69,7 @@
                   <p>
                   <h6>  {{cafe.name}}<br>
                      {{cafe.address}}</h6><br>
-                     
-                  
-   
                      "{{review.details}}" <br><br>
-                     <!-- <a class="waves-effect waves-light btn btn-flat modal-trigger white-text light-blue darken-4" href="#DeleteModal">DELETE</a> -->
                      <a href="{{ url_for('get_individualcafe', cafe_id=(cafe._id),user_id=(user_id)) }}" class="waves-effect waves-light btn light-blue lighten-3">See More</a>    
                   </p>
                </li>
@@ -89,30 +79,6 @@
    {% endif %}
    {% endfor %}
 </div>
-<div id="DeleteModal" class="modal">
-            <div class=" modal-content">
-                <p>Are you sure you want to delete your review?</p>
-                
-            </div>
-            <div class="modal-footer">
-                <button class="modal-close waves-effect waves-blue btn-flat blue-text light-blue lighten-3" type="submit"
-                        name="action">No!
-                </button>
-                <a class="waves-effect waves-light btn btn-flat modal-trigger red accent-3" href="{{ url_for('remove_review', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content">Yes, Delete</a>
-            </div>
-    </div>
-<div id="RemoveModal" class="modal" >
-            <div class=" modal-content">
-                <p>Are you sure you want to remove this cafe from your list?</p>
-                
-            </div>
-            <div class="modal-footer">
-                <button class="modal-close waves-effect waves-blue btn-flat blue-text light-blue lighten-3" type="submit"
-                        name="action">No!
-                </button>
-                <a class="waves-effect waves-light btn btn-flat modal-trigger red accent-3" href="{{ url_for('remove_favourite', cafe_id=cafe._id, user_id=user_id) }}" class="secondary-content">Yes, Remove</a>
-            </div>
-    </div>    
 {% endfor %}
 {% endif %}
 {% endblock %}

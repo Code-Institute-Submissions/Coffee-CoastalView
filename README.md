@@ -62,7 +62,7 @@ I created a test email on gmail and the app uses this to create responses to use
 I used Visual Studio to write, test and run my code before merging this code onto Gitpod for the purpose of this project.
 On completion of each section I committed the work to GitHub. From the Github platform, I deployed the project to a hosting platform. The project is hosted on [Heroku](https://www.heroku.com/); in order to make the project go live, I had to insure I had the correct settings employed in Gitpod/Heroku. I used git in the command line and followed the instructions supplied by Heroku. Once activated my site was available at the following address: (https://coffee-coastal-view.herokuapp.com/).
 ## Deployment Security
-I used the Heroku configuration variables option to configure sensitive data such as email server and passwords. 
+I used the Heroku configuration variables option to configure sensitive data such as email credentials, secret keys, admin users and passwords. 
 
 # Testing and Debugging
 - Python:  I used the built-in Python dedugger in Visual Studio to debug my Python. I set breakpoints to see where certain functions/code was failing. This was a really useful tool throughout the development of this project. I also used [ExtendClass.com](https://extendsclass.com/python-tester.html) to validate my python code. No syntax errors were detected.

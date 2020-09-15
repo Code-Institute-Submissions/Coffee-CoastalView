@@ -75,9 +75,16 @@ I used the Heroku configuration variables option to configure sensitive data suc
 - Python:  I used the built-in Python dedugger in Visual Studio to debug my Python. I set breakpoints to see where certain functions/code was failing. This was a really useful tool throughout the development of this project. I also used [ExtendClass.com](https://extendsclass.com/python-tester.html) to validate my python code. No syntax errors were detected.
 - HTML & CSS: In order to validate my HTML & CSS I availed of [W3C Validator](https://jigsaw.w3.org/css-validator/validator) which returned no errors.
 - Javascript: I used [Esprima](https://esprima.org/demo/validate.html) to validate my javascript and no errors were returned. I used the console on chrome to help debug my Javascript code.
-- Responsive: To test if the website was responsive I used the following [website](http://ami.responsivedesign.is/#) - the website was responsive across all screen sizes. 
+- Responsive: To test if the website was responsive I used the following [website](http://ami.responsivedesign.is/#) - the website was responsive across all screen sizes. A full test table can be found [here](/TestTable).
 - Python Logger: I also used the python logger app to help debug my python code.
 - [RoBo 3t](https://robomongo.org/): This was a very helpful tool to anayalze the Mongo collections and queries. 
+## Bugs during test 
+One bug I encountered during testing was that in an update function, I was fetching a collection of cafes for a page before I made the update to the record. This resulted in the updated page not having the correct data. In order to rectify this, I had to fecth the collection after the update statement. Another bug I encountered was that on the Profile page I was presenting the favourites for all users instead of the user that was logged in. In order to fix this, I had to filter out favourites not belonging to that user. 
+## Testing CRUD functionailties
+- Create: Users can create an account and add a review. 
+- Read: The cafes data is pulled from MongoBD, users can see their previous reviews and username. 
+- Update: Users have the option to update their reviews along with their user information (username & password).
+- Delete: Users can delete reviews or cafes from their favourites list. 
 
 # Additional Resources
 In order to complete this project I studied MongoBD in great depth and complied some useful functions and resources that I found very 

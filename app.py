@@ -483,8 +483,8 @@ def remove_review(cafe_id, user_id):
         return abort(404, description='Resource not found')
 
 
-app.debug = True
+app.debug = False
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

@@ -45,7 +45,7 @@ def send_email():
         msg = Message(subject="New Cafe Request",sender=sender,recipients=recipients,body=body)
         mail.send(msg)
         top_three= mongo.db.cafes.aggregate([{"$sort" :{"ratings_avg" :-1}},{ "$limit" : 3}])
-        flash("Your email has been sent, we will be in touch soon")
+        flash("Your email has been sent, we will be in touch soon","info")
         return render_template('landing.html',top_three=top_three)
     else:
         return abort(404, description='Resource not found')
@@ -175,10 +175,10 @@ def index():
         username=session['USERNAME']
         user = mongo.db.users.find_one({'name': username})
     else:
-        flash("You must log in to access cafes")
+        flash("You must log in to access cafes","error")
         return render_template('index.html')
     if user:
-        flash("You are logged in as " + username)
+        flash("You are logged in as " + username,"info")
         cafes = mongo.db.cafes.find()
         my_reviews= \
             mongo.db.cafes.find( { "reviews.user_id" : ObjectId(user['_id']) } )
@@ -214,7 +214,7 @@ def login():
             top_three= mongo.db.cafes.aggregate([{ "$sort" : {"ratings_avg" : -1 }},{ "$limit" : 3 }])
             return render_template('landing.html', top_three=top_three)
     else:
-        flash("Sorry that username does not exist ")
+        flash("Sorry that username does not exist","error")
         return render_template('index.html')
 
 @app.route('/edit_user')
@@ -266,7 +266,7 @@ def register():
                 session['USERNAME'] = username
                 return render_template('registrationcomplete.html')
             else:
-                flash("The username " + username + " already exists!")
+                flash("The username " + username + " already exists!","error")
 
         return render_template('register.html')
     except:
@@ -294,7 +294,7 @@ def add_favourite(cafe_id, user_id):
         users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id), "favourites.user_id" : ObjectId(user_id) } )        
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
         existing_review = get_exisiting_review(cafe_id, user_id)
-        flash("Cafe " + cafe['name'] + " was added to your favourites")
+        flash("Cafe " + cafe['name'] + " was added to your favourites","info")
         return render_template('individualcafe.html', cafe=cafe,
                            user_id=user_id, existing_review = existing_review, users_favourites=users_favourites )
     except:
@@ -338,7 +338,7 @@ def remove_favourite(cafe_id, user_id):
             mongo.db.cafes.find({'favourites.user_id': ObjectId(user_id)})
         my_reviews= \
             mongo.db.cafes.find( { "reviews.user_id" : ObjectId( user_id ) } )
-        flash("Cafe " + cafe['name'] + " was removed from your favourites")
+        flash("Cafe " + cafe['name'] + " was removed from your favourites","info")
         return render_template('myprofile.html', cafes=cafes,
                            user_name=username, user_id=user_id, my_reviews=my_reviews)
     except:
@@ -374,7 +374,7 @@ def rate_cafe(cafe_id, user_id):
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})
         users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) })   
         existing_review = get_exisiting_review(cafe_id,user_id)
-        flash("You rated " + cafe['name'] + ". Thank you for your feedback!")
+        flash("You rated " + cafe['name'] + ". Thank you for your feedback!","info")
         return render_template('individualcafe.html', cafe=cafe,
                            user_id=user_id, existing_review = existing_review, users_favourites=users_favourites)    
     except:
@@ -388,7 +388,7 @@ def rate_cafe(cafe_id, user_id):
 @app.route('/logout')
 def logout():
     session.pop('USERNAME', None)
-    flash("You have logged out.")
+    flash("You have logged out.","info")
     return render_template('index.html')
 
 
@@ -406,7 +406,7 @@ def add_review(cafe_id, user_id):
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})  # refresh the list
         users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) })  
         existing_review = get_exisiting_review(cafe_id,user_id)
-        flash("You added a review for " + cafe['name'] + ". Thank you for your feedback!")  
+        flash("You added a review for " + cafe['name'] + ". Thank you for your feedback!","info")  
         return render_template('individualcafe.html', cafe=cafe,
                             user_id=user_id, existing_review = existing_review, users_favourites=users_favourites)
     except:
@@ -448,7 +448,7 @@ def update_review(cafe_id, user_id):
     existing_review = get_exisiting_review(cafe_id,user_id)              
     cafe = cafes.find_one({'_id': ObjectId(cafe_id)})  # refresh the list
     users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id),"favourites.user_id" : ObjectId(user_id) }) 
-    flash("You updated a review for " + cafe['name'] + ". Thank you for your feedback!") 
+    flash("You updated a review for " + cafe['name'] + ". Thank you for your feedback!","info") 
     return render_template('individualcafe.html', cafe=cafe,
                            user_id=user_id,existing_review = existing_review,users_favourites=users_favourites)
 
@@ -473,7 +473,7 @@ def remove_review(cafe_id, user_id):
                         + ' user_id= ' + str(user_id))
         cafe = cafes.find_one({'_id': ObjectId(cafe_id)})  # refresh the list
         users_favourites = mongo.db.cafes.find({ "_id" : ObjectId(cafe_id), "favourites.user_id" : ObjectId(user_id) })
-        flash("You removed a review for " + cafe['name'] + ". Thank you!") 
+        flash("You removed a review for " + cafe['name'] + ". Thank you!","info") 
         return render_template('individualcafe.html', cafe=cafe,
                            user_id=user_id,existing_review = existing_review,users_favourites=users_favourites)
     except:

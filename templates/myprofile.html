@@ -17,8 +17,8 @@
          <p>Username: {{ user_name }}</p>
          <a href="{{ url_for('edit_user') }}" class="waves-effect waves-light btn light-blue lighten-3">Update Profile</a>
          <a href="{{ url_for('logout') }}" class="waves-effect waves-light btn light-blue lighten-3">logout</a>
-         {% for message in get_flashed_messages() %}
-         <p>{{ message }}</p>
+         {% for category, message in get_flashed_messages(with_categories=True) %}
+         <div class="alert alert-{{category}}">{{ message }}</div>
          {% endfor %}
       </div>
    </div>

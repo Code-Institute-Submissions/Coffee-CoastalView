@@ -64,7 +64,6 @@ form .login {
 	height: 150px!important;
 	border: 1px #598AB0 !important
 }
-
 .cafe {
 	position: relative;
 	margin: .5rem 0 1rem 0;
@@ -136,7 +135,7 @@ h1 { font-size: 1.5em; margin: 10px; }
 
 /* Media Queries */
 @media screen and (min-width: 1400px) {
-    .card {
+.card {
 		position: relative;
 		margin: .5rem 0 1rem 0;
 		background-color: #fff;
@@ -148,8 +147,7 @@ h1 { font-size: 1.5em; margin: 10px; }
 		height: 550px!important;
 		}
 	}
-
-    .card-panel {
+.card-panel {
 	-webkit-transition: -webkit-box-shadow .25s;
 	transition: -webkit-box-shadow .25s;
 	transition: box-shadow .25s;
@@ -172,4 +170,26 @@ h1 { font-size: 1.5em; margin: 10px; }
 	border-radius: 2px;
 	height: 150px!important;
 	border: 1px #598AB0 !important
+}
+
+
+.alert {
+	padding: 12px;
+	border-radius: 3px;
+	font-size: 1.2rem;
+	margin-bottom: 16px;
+	border-width: 2px;
+	border-style: solid;
+  }
+  
+.alert-error {
+border-color: darkred;
+background-color: red;
+color: white;
+}
+  
+.alert-info {
+border-color: orange;
+background-color: yellow;
+color: black;
 }

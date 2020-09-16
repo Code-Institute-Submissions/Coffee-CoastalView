@@ -83,15 +83,15 @@
                         {% endfor %}
                         <h6>Please fill out this form</h5>
                         <div class="input-field">
-                            <input type="text" name="cafe_name" placeholder="Cafe Name" id="cafename" required/>
+                            <input type="text" name="cafe_name" placeholder="Cafe Name" id="cafename" title="Remove any leading or trailing spaces" required pattern="^[^ ].+[^ ]$"/>
                             <label for="cafename">Cafe Name</label>
                         </div>
                         <div class="input-field">
-                            <input type="text" name="cafe_location" placeholder="Cafe Location" id="cafelocation" required/>
+                            <input type="text" name="cafe_location" placeholder="Cafe Location" id="cafelocation" title="Remove any leading or trailing spaces required pattern="^[^ ].+[^ ]$"/>
                             <label for="cafelocation">Cafe Location</label>
                         </div>
                         <div class="input-field">
-                            <input type="text" name="email_address" placeholder="your email address" id="email" required/>
+                            <input type="text" name="email_address" placeholder="your email address" id="email" title="Remove any leading or trailing spaces required pattern="^[^ ].+[^ ]$"/>
                             <label for="email">Email Address</label>
                         </div>
                         <button class="btn waves-effect waves-light light-blue lighten-3" type="submit">Send Emaill</button>

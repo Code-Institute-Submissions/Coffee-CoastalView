@@ -9,18 +9,18 @@
         <div class="row">
             <div class="row">
                 <div class="input-field">
-                    <input type="hidden" name="user_id" id="user_id" required="required" value="{{user._id}}"/>
+                    <input type="hidden" name="user_id" id="user_id" required="required" value="{{user._id}}" title="Remove any leading or trailing spaces" required pattern="^[^ ].+[^ ]$"/>
                 </div>
                 <div class="input-field">
-                    <input type="text" name="user_name" placeholder="Enter New Username" id="user_name" required="required"/>
+                    <input type="text" name="user_name" placeholder="Enter New Username" id="user_name" required="required" title="Remove any leading or trailing spaces" required pattern="^[^ ].+[^ ]$"/>
                     <label for="UserName">Username : {{user.name}}</label>
                 </div>  
                 <div class="input-field">
-                    <input type="password" name="user_password" placeholder="Enter Password" id="password" required="required"/>
+                    <input type="password" name="user_password" placeholder="Enter Password" id="password" required="required" title="Remove any leading or trailing spaces" required pattern="^[^ ].+[^ ]$"/>
                     <label for="Password">Password : </label>
                 </div>
                 <div class="input-field">
-                    <input type="password" name="confirmed_password" placeholder="Confirm Password Password" id="confirm_password" required="required"/>
+                    <input type="password" name="confirmed_password" placeholder="Confirm Password Password" id="confirm_password" required="required" title="Remove any leading or trailing spaces" required pattern="^[^ ].+[^ ]$"/>
                     <label for="ConfirmedPassword">Confirm Password : </label>
                 </div>
             </div>

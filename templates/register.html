@@ -10,15 +10,15 @@
                 {% endfor %}
                 <div class="form-group">
                     <label for="exampleInputEmail1">Username</label>
-                    <input type="text" class="form-control" name="user_name" placeholder="Username" required>
+                    <input type="text" class="form-control" name="user_name" placeholder="Username" required title="Remove any leading or trailing spaces" required pattern="^[^ ].+[^ ]$">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="password" name="user_password" placeholder="Password" required>
+                    <input type="password" class="form-control" id="password" name="user_password" placeholder="Password" required title="Remove any leading or trailing spaces" required pattern="^[^ ].+[^ ]$">
                 </div>
                 <div class="form-group">
                     <label for="confirm_password">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Password" required>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Password" required title="Remove any leading or trailing spaces" required pattern="^[^ ].+[^ ]$">
                 </div>
                 <button type="submit" class="btn btn-primary btn-block light-blue lighten-3">Register</button>
             </form>
